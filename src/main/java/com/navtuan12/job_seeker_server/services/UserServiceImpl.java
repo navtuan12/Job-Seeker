@@ -3,6 +3,7 @@ package com.navtuan12.job_seeker_server.services;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.navtuan12.job_seeker_server.dto.request.UserLoginRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserRegisterRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserUpdateRequest;
 import com.navtuan12.job_seeker_server.models.User;
@@ -48,6 +49,27 @@ public class UserServiceImpl implements UserService{
         user.setAbout(request.getAbout());
 
         return userRepository.save(user);
+    }
+
+    @Override
+    public User findById(String id) {
+        return userRepository.findById(new ObjectId(id)).orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    @Override
+    public String login(UserLoginRequest request) {
+        User dbUser = userRepository.findUserByEmail(request.getEmail());
+
+        if (dbUser == null) {
+            return "Wrong username or password!";
+        }
+
+        if (!dbUser.getPassword().equals(request.getPassword())) {
+            return "Invalid password";
+        }
+
+        return "Login successful";
+
     }
 
 }

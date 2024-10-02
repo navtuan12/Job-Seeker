@@ -7,4 +7,5 @@ import com.navtuan12.job_seeker_server.models.User;
 
 @Repository
 public interface UserRepository extends MongoRepository<User, ObjectId>{
+    User findUserByEmail(String email);
 }
