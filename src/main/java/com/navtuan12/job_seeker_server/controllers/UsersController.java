@@ -14,6 +14,7 @@ import com.navtuan12.job_seeker_server.dto.request.UserRegisterRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserUpdateRequest;
 import com.navtuan12.job_seeker_server.models.User;
 import com.navtuan12.job_seeker_server.services.UserService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/users")
@@ -32,7 +33,7 @@ public class UsersController {
     }
     
     @PostMapping("/register")
-    public User createUser(@RequestBody UserRegisterRequest request) {
+    public User createUser(@RequestBody @Valid UserRegisterRequest request) {
         return userService.register(request);
     }
 

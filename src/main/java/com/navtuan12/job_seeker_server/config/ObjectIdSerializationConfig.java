@@ -19,7 +19,7 @@ public class ObjectIdSerializationConfig {
         module.addSerializer(ObjectId.class, new StdSerializer<ObjectId>(ObjectId.class) {
             @Override
             public void serialize(ObjectId objectId, com.fasterxml.jackson.core.JsonGenerator jsonGenerator, com.fasterxml.jackson.databind.SerializerProvider serializerProvider)
-                    throws IOException {
+                    throws IOException { 
                 // Serialize ObjectId to a hex string
                 jsonGenerator.writeString(objectId.toHexString());
             }

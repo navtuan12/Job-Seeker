@@ -27,6 +27,10 @@ public class UserServiceImpl implements UserService{
     public User register(UserRegisterRequest request) {
         User user = new User();
 
+        if(userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already exists");
+        }
+
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setPassword(request.getPassword());
@@ -58,7 +62,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public String login(UserLoginRequest request) {
-        User dbUser = userRepository.findUserByEmail(request.getEmail());
+        User dbUser = userRepository.findByEmail(request.getEmail());
 
         if (dbUser == null) {
             return "Wrong username or password!";
