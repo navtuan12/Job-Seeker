@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import com.navtuan12.job_seeker_server.dto.request.UserLoginRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserRegisterRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserUpdateRequest;
+import com.navtuan12.job_seeker_server.exception.AppException;
+import com.navtuan12.job_seeker_server.exception.ErrorCode;
+import com.navtuan12.job_seeker_server.mapper.UserMapper;
 import com.navtuan12.job_seeker_server.models.User;
 import com.navtuan12.job_seeker_server.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,26 +19,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserServiceImpl implements UserService{
 
+    @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private UserMapper userMapper;
 
     @Override
     public User register(UserRegisterRequest request) {
-        User user = new User();
-
         if(userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already exists");
+            throw new AppException(ErrorCode.USER_EXISTED);
         }
-
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setPassword(request.getPassword());
-        user.setEmail(request.getEmail());
-
+        User user = userMapper.toUser(request);
         return userRepository.save(user);
     }
 
@@ -61,18 +56,18 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public String login(UserLoginRequest request) {
+    public User login(UserLoginRequest request) {
         User dbUser = userRepository.findByEmail(request.getEmail());
 
         if (dbUser == null) {
-            return "Wrong username or password!";
+            throw new RuntimeException("Wrong email or password!");
         }
 
         if (!dbUser.getPassword().equals(request.getPassword())) {
-            return "Invalid password";
+            throw new RuntimeException("Wrong email or password!");
         }
 
-        return "Login successful";
+        return dbUser;
 
     }
 

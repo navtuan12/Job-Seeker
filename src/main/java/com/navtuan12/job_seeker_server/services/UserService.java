@@ -9,7 +9,7 @@ import com.navtuan12.job_seeker_server.models.User;
 public interface UserService {
     User register(UserRegisterRequest request);
 
-    String login(UserLoginRequest request);
+    User login(UserLoginRequest request);
     User update(UserUpdateRequest request, ObjectId id);
     User findById(String id);
 }

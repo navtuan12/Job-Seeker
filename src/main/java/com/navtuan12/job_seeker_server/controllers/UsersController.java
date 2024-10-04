@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.navtuan12.job_seeker_server.dto.request.UserLoginRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserRegisterRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserUpdateRequest;
+import com.navtuan12.job_seeker_server.dto.response.ApiResponse;
 import com.navtuan12.job_seeker_server.models.User;
 import com.navtuan12.job_seeker_server.services.UserService;
 import jakarta.validation.Valid;
@@ -28,13 +29,19 @@ public class UsersController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserLoginRequest request) {
-        return userService.login(request);
+    public ApiResponse<User> login(@RequestBody UserLoginRequest request) {
+        ApiResponse<User> response = new ApiResponse<>();
+        response.setSuccess(true);
+        response.setResult(userService.login(request));
+        return response;
     }
     
     @PostMapping("/register")
-    public User createUser(@RequestBody @Valid UserRegisterRequest request) {
-        return userService.register(request);
+    public ApiResponse<User> createUser(@RequestBody @Valid UserRegisterRequest request) {
+        ApiResponse<User> response = new ApiResponse<>();
+        response.setSuccess(true);
+        response.setResult(userService.register(request)); 
+        return response;
     }
 
     @GetMapping("/get-user/{userId}")

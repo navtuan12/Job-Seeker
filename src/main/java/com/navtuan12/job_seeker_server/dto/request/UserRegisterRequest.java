@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRegisterRequest {
-    @NotBlank(message = "Please enter your first name")
+    @NotBlank(message = "FIRSTNAME_INVALID")
     private String firstName;
 
-    @NotBlank(message = "Please enter your last name")
+    @NotBlank(message = "LASTNAME_INVALID")
     private String lastName;
 
-    @Email(message = "Please enter a valid email")
+    @Email(message = "EMAIL_INVALID")
     private String email;
 
     @Size(min = 8, message = "Password must be at least 8 characters")
