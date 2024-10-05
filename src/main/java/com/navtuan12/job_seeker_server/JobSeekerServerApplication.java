@@ -2,10 +2,9 @@ package com.navtuan12.job_seeker_server;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
-import com.navtuan12.job_seeker_server.repository.UserRepository;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
 public class JobSeekerServerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(JobSeekerServerApplication.class, args);

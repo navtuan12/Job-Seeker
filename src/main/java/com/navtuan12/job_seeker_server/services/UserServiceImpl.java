@@ -1,6 +1,7 @@
 package com.navtuan12.job_seeker_server.services;
 
 import org.bson.types.ObjectId;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.navtuan12.job_seeker_server.dto.request.UserLoginRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserRegisterRequest;
@@ -24,23 +25,25 @@ public class UserServiceImpl implements UserService{
 
     UserRepository userRepository;
     UserMapper userMapper;
+    PasswordEncoder passwordEncoder;
 
     @Override
-    public User register(UserRegisterRequest request) {
+    public UserResponse register(UserRegisterRequest request) {
         if(userRepository.existsByEmail(request.getEmail())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
         User user = userMapper.toUser(request);
-        return userRepository.save(user);
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 
     @Override
-    public User update(UserUpdateRequest request, ObjectId id) {
+    public UserResponse update(UserUpdateRequest request, ObjectId id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-
         userMapper.updateUser(user, request);
-
-        return userRepository.save(user);
+        userRepository.save(user);
+        return userMapper.toUserResponse(user);
     }
 
     @Override
@@ -50,7 +53,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User login(UserLoginRequest request) {
+    public UserResponse login(UserLoginRequest request) {
         User dbUser = userRepository.findByEmail(request.getEmail());
 
         if (dbUser == null) {
@@ -61,7 +64,7 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException("Wrong email or password!");
         }
 
-        return dbUser;
+        return userMapper.toUserResponse(dbUser);
 
     }
 

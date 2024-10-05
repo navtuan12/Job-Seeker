@@ -13,7 +13,6 @@ import com.navtuan12.job_seeker_server.dto.request.UserRegisterRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserUpdateRequest;
 import com.navtuan12.job_seeker_server.dto.response.ApiResponse;
 import com.navtuan12.job_seeker_server.dto.response.UserResponse;
-import com.navtuan12.job_seeker_server.models.User;
 import com.navtuan12.job_seeker_server.services.UserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -29,16 +28,16 @@ public class UsersController {
     UserService userService;
     
     @PostMapping("/login")
-    public ApiResponse<User> login(@RequestBody UserLoginRequest request) {
-        ApiResponse<User> response = new ApiResponse<>();
+    public ApiResponse<UserResponse> login(@RequestBody UserLoginRequest request) {
+        ApiResponse<UserResponse> response = new ApiResponse<>();
         response.setSuccess(true);
         response.setResult(userService.login(request));
         return response;
     }
     
     @PostMapping("/register")
-    public ApiResponse<User> createUser(@RequestBody @Valid UserRegisterRequest request) {
-        ApiResponse<User> response = new ApiResponse<>();
+    public ApiResponse<UserResponse> createUser(@RequestBody @Valid UserRegisterRequest request) {
+        ApiResponse<UserResponse> response = new ApiResponse<>();
         response.setSuccess(true);
         response.setResult(userService.register(request)); 
         return response;
@@ -53,8 +52,11 @@ public class UsersController {
     }
 
     @PutMapping("/update/{id}")
-    public User updateUser(@RequestBody UserUpdateRequest request, @PathVariable ObjectId id) {
-        return userService.update(request, id);
+    public ApiResponse<UserResponse> updateUser(@RequestBody UserUpdateRequest request, @PathVariable ObjectId id) {
+        ApiResponse<UserResponse> response = new ApiResponse<>();
+        response.setSuccess(true);
+        response.setResult(userService.update(request, id));
+        return response;
     }
 }
 

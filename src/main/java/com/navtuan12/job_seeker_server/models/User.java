@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @Document(collection="users")
 @Data
@@ -21,7 +22,7 @@ public class User{
     private String password;
     private String contact;
     private String location;
-    private String accountType;
+    private String accountType = "seeker";
     private String profileUrl;
     private String cvUrl;
     private String jobTitle;
