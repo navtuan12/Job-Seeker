@@ -38,14 +38,7 @@ public class UserServiceImpl implements UserService{
     public User update(UserUpdateRequest request, ObjectId id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setPassword(request.getPassword());
-        user.setEmail(request.getEmail());
-        user.setContact(request.getContact());
-        user.setLocation(request.getLocation());
-        user.setJobTitle(request.getJobTitle());
-        user.setAbout(request.getAbout());
+        userMapper.updateUser(user, request);
 
         return userRepository.save(user);
     }

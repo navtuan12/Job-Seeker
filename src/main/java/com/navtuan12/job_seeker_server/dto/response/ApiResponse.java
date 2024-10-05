@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ApiResponse <T> {
     private boolean success;
-    private int code;
+    private int code=1000;
     private String message;
     private T result;
     private Map<String, Object> additionalProperties = new HashMap<>();
