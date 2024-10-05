@@ -11,6 +11,9 @@ public enum ErrorCode {
     FIRSTNAME_INVALID(1002, "Please enter your first name"),
     LASTNAME_INVALID(1003, "Please enter your last name"),
     EMAIL_INVALID(1004, "Please enter a valid email"),
+    PASSWORD_INVALID(1005, "Password must be at least 8 characters"),
+    USER_NOT_FOUND(1006, "User not found"),
+    WRONG_PASSWORD(1007, "Wrong password"),
     ;
     private int code;
     private String message;

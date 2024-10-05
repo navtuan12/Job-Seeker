@@ -32,6 +32,7 @@ public class UsersController {
         ApiResponse<UserResponse> response = new ApiResponse<>();
         response.setSuccess(true);
         response.setResult(userService.login(request));
+        response.addAdditionalProperty("token", userService.generatorToken(request.getEmail()));
         return response;
     }
     

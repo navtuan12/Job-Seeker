@@ -20,6 +20,6 @@ public class UserRegisterRequest {
     @Email(message = "EMAIL_INVALID")
     private String email;
 
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Size(min = 8, message = "PASSWORD_INVALID")
     private String password;
 }
