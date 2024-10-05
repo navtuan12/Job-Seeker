@@ -1,7 +1,6 @@
 package com.navtuan12.job_seeker_server.controllers;
 
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,21 +12,22 @@ import com.navtuan12.job_seeker_server.dto.request.UserLoginRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserRegisterRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserUpdateRequest;
 import com.navtuan12.job_seeker_server.dto.response.ApiResponse;
+import com.navtuan12.job_seeker_server.dto.response.UserResponse;
 import com.navtuan12.job_seeker_server.models.User;
 import com.navtuan12.job_seeker_server.services.UserService;
 import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 @RestController
 @RequestMapping("/users")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UsersController {
 
-    private UserService userService;
-
-    @Autowired
-    public UsersController(UserService userService) {
-        this.userService = userService;
-    }
-
+    UserService userService;
+    
     @PostMapping("/login")
     public ApiResponse<User> login(@RequestBody UserLoginRequest request) {
         ApiResponse<User> response = new ApiResponse<>();
@@ -45,9 +45,11 @@ public class UsersController {
     }
 
     @GetMapping("/get-user/{userId}")
-    public User getUser(@PathVariable String userId) {
-        User user = userService.findById(userId);
-        return user;
+    public ApiResponse<UserResponse> getUser(@PathVariable String userId) {
+        ApiResponse<UserResponse> response = new ApiResponse<>();
+        response.setSuccess(true);
+        response.setResult(userService.findById(userId));
+        return response;
     }
 
     @PutMapping("/update/{id}")

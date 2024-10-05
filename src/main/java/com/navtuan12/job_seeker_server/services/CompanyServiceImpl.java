@@ -1,25 +1,22 @@
 package com.navtuan12.job_seeker_server.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.navtuan12.job_seeker_server.dto.request.CompanyLoginRequest;
 import com.navtuan12.job_seeker_server.dto.request.CompanyRegisterRequest;
 import com.navtuan12.job_seeker_server.models.Company;
 import com.navtuan12.job_seeker_server.repository.CompanyRepository;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CompanyServiceImpl implements CompanyService{
     
-    private CompanyRepository companyRepository;
-    
-    @Autowired
-    public CompanyServiceImpl(CompanyRepository companyRepository) {
-        this.companyRepository = companyRepository;
-    }
+    CompanyRepository companyRepository;
 
     @Override
     public Company register(CompanyRegisterRequest request) {

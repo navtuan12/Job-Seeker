@@ -1,29 +1,29 @@
 package com.navtuan12.job_seeker_server.services;
 
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.navtuan12.job_seeker_server.dto.request.UserLoginRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserRegisterRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserUpdateRequest;
+import com.navtuan12.job_seeker_server.dto.response.UserResponse;
 import com.navtuan12.job_seeker_server.exception.AppException;
 import com.navtuan12.job_seeker_server.exception.ErrorCode;
 import com.navtuan12.job_seeker_server.mapper.UserMapper;
 import com.navtuan12.job_seeker_server.models.User;
 import com.navtuan12.job_seeker_server.repository.UserRepository;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserServiceImpl implements UserService{
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserMapper userMapper;
+    UserRepository userRepository;
+    UserMapper userMapper;
 
     @Override
     public User register(UserRegisterRequest request) {
@@ -44,8 +44,9 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public User findById(String id) {
-        return userRepository.findById(new ObjectId(id)).orElseThrow(() -> new RuntimeException("User not found"));
+    public UserResponse findById(String id) {
+        return userMapper.toUserResponse(userRepository.findById(new ObjectId(id))
+                    .orElseThrow(() -> new RuntimeException("User not found")));
     }
 
     @Override

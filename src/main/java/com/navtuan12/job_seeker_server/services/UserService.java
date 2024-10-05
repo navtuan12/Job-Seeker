@@ -4,6 +4,7 @@ import org.bson.types.ObjectId;
 import com.navtuan12.job_seeker_server.dto.request.UserLoginRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserRegisterRequest;
 import com.navtuan12.job_seeker_server.dto.request.UserUpdateRequest;
+import com.navtuan12.job_seeker_server.dto.response.UserResponse;
 import com.navtuan12.job_seeker_server.models.User;
 
 public interface UserService {
@@ -11,5 +12,5 @@ public interface UserService {
 
     User login(UserLoginRequest request);
     User update(UserUpdateRequest request, ObjectId id);
-    User findById(String id);
+    UserResponse findById(String id);
 }
