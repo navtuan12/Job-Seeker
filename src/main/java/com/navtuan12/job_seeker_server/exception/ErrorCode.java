@@ -1,3 +1,4 @@
+
 package com.navtuan12.job_seeker_server.exception;
 
 import lombok.AllArgsConstructor;
@@ -14,6 +15,8 @@ public enum ErrorCode {
     PASSWORD_INVALID(1005, "Password must be at least 8 characters"),
     USER_NOT_FOUND(1006, "User not found"),
     WRONG_PASSWORD(1007, "Wrong password"),
+    USER_INVALID(1008, "Not authorized"),
+    INVALID_TOKEN(1009, "Invalid token"),
     ;
     private int code;
     private String message;

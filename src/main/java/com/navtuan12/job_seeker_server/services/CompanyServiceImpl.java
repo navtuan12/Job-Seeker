@@ -1,8 +1,8 @@
 package com.navtuan12.job_seeker_server.services;
 
 import org.springframework.stereotype.Service;
-import com.navtuan12.job_seeker_server.dto.request.CompanyLoginRequest;
-import com.navtuan12.job_seeker_server.dto.request.CompanyRegisterRequest;
+import com.navtuan12.job_seeker_server.dto.request.company.CompanyLoginRequest;
+import com.navtuan12.job_seeker_server.dto.request.company.CompanyRegisterRequest;
 import com.navtuan12.job_seeker_server.models.Company;
 import com.navtuan12.job_seeker_server.repository.CompanyRepository;
 import lombok.AccessLevel;

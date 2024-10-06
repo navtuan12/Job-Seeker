@@ -1,12 +1,13 @@
 package com.navtuan12.job_seeker_server.models;
 
+import java.io.Serializable;
+import java.util.Date;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 
 @Document(collection="users")
 @Data
@@ -28,4 +29,6 @@ public class User{
     private String jobTitle;
     private String about;
     private Boolean verified;
+    private Date createdAt;
+    private Date updatedAt;
 }

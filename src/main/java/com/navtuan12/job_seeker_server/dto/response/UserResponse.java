@@ -21,7 +21,6 @@ public class UserResponse {
     private String lastName;
     private String email;
     private String contact;
-    private String password;
     private String location;
     private String accountType;
     private String jobTitle;

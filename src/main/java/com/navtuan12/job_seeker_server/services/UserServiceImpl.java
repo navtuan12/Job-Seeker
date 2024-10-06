@@ -7,9 +7,9 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.navtuan12.job_seeker_server.dto.request.UserLoginRequest;
-import com.navtuan12.job_seeker_server.dto.request.UserRegisterRequest;
-import com.navtuan12.job_seeker_server.dto.request.UserUpdateRequest;
+import com.navtuan12.job_seeker_server.dto.request.user.UserLoginRequest;
+import com.navtuan12.job_seeker_server.dto.request.user.UserRegisterRequest;
+import com.navtuan12.job_seeker_server.dto.request.user.UserUpdateRequest;
 import com.navtuan12.job_seeker_server.dto.response.UserResponse;
 import com.navtuan12.job_seeker_server.exception.AppException;
 import com.navtuan12.job_seeker_server.exception.ErrorCode;
@@ -39,10 +39,6 @@ public class UserServiceImpl implements UserService{
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
 
-    @Value("${jwt.SIGNER_KEY}")
-    @NonFinal 
-    String SECRET_KEY;
-
     @Override
     public UserResponse register(UserRegisterRequest request) {
         if(userRepository.existsByEmail(request.getEmail())) {
@@ -67,45 +63,17 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public UserResponse update(UserUpdateRequest request, ObjectId id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public UserResponse update(UserUpdateRequest request, String email) {
+        User user = userRepository.findByEmail(email)
+                        .orElseThrow(() -> new AppException(ErrorCode.USER_INVALID));
         userMapper.updateUser(user, request);
         userRepository.save(user);
         return userMapper.toUserResponse(user);
     }
 
     @Override
-    public UserResponse findById(String id) {
-        return userMapper.toUserResponse(userRepository.findById(new ObjectId(id))
-                    .orElseThrow(() -> new RuntimeException("User not found")));
+    public UserResponse findByEmail(String email) {
+        return userMapper.toUserResponse(userRepository.findByEmail(email)
+                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
-
-    @Override
-    public String generatorToken(String email) {
-        //define algorithm
-        JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
-
-        //define payload 
-        JWTClaimsSet claimSet = new JWTClaimsSet.Builder()
-            .subject(email)
-            .issuer("navtuan12")
-            .issueTime(new Date())
-            .expirationTime(new Date(
-                Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()
-            ))
-            .build();
-        
-        Payload payload = new Payload(claimSet.toJSONObject());
-
-        JWSObject jwsObject = new JWSObject(header, payload);
-
-        try {
-            jwsObject.sign(new MACSigner(SECRET_KEY.getBytes()));
-            return jwsObject.serialize();
-        } catch (JOSEException e) {
-            log.error("cannot create", e);
-            throw new RuntimeException(e);
-        }
-    }
-
 }

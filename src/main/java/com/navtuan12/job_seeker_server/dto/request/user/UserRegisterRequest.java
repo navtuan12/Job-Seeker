@@ -1,4 +1,4 @@
-package com.navtuan12.job_seeker_server.dto.request;
+package com.navtuan12.job_seeker_server.dto.request.user;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
