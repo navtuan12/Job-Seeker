@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService{
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
 
-    @Value("${SIGNER_KEY}")
+    @Value("${jwt.SIGNER_KEY}")
     @NonFinal 
     String SECRET_KEY;
 

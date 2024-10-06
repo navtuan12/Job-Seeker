@@ -53,7 +53,4 @@ public class CompanyController {
     public String getMethodName4(@PathVariable String comnapyId) {
         return new String();
     }
-    
-    
-    
 }

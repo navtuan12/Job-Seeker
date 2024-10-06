@@ -11,6 +11,5 @@ public interface UserService {
     UserResponse login(UserLoginRequest request);
     UserResponse update(UserUpdateRequest request, ObjectId id);
     UserResponse findById(String id);
-
     String generatorToken(String email);
 }
