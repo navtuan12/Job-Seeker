@@ -73,7 +73,7 @@ public class CompanyController {
     }
 
     @GetMapping("/get-company/{companyId}")
-    public ApiResponse<CompanyIdResponse> getMethodName4(@PathVariable ObjectId companyId, HttpServletRequest request) {
+    public ApiResponse<CompanyIdResponse> getCompanyId(@PathVariable ObjectId companyId, HttpServletRequest request) {
         String token = jwtService.getTokenFromRequest(request);
         String email = jwtService.getPayloadFromToken(token);
         ApiResponse<CompanyIdResponse> response = new ApiResponse<CompanyIdResponse>();
