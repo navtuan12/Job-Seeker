@@ -35,4 +35,7 @@ public class User{
     private Date createdAt;
     @LastModifiedDate
     private Date updatedAt;
+
+    private String cpassword;
+    private String token;
 }

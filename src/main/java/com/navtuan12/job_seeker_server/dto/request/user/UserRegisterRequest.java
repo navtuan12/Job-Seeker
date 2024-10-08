@@ -3,7 +3,6 @@ package com.navtuan12.job_seeker_server.dto.request.user;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,4 +20,6 @@ public class UserRegisterRequest {
 
     @Size(min = 8, message = "PASSWORD_INVALID")
     private String password;
+
+    private String cpassword;
 }

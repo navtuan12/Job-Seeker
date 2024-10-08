@@ -8,4 +8,6 @@ import com.navtuan12.job_seeker_server.models.Company;
 public interface CompanyRepository extends MongoRepository <Company, ObjectId> {
     Optional<Company> findByEmail(String email);
     boolean existsByEmail(String email);
+
+    Optional<Company> findById(ObjectId id);
 }

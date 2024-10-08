@@ -104,6 +104,7 @@ public class JobServiceImpl implements JobService {
         return jobs.stream().map(job -> {
             CompanyProfileResponse companyProfile =
                     companyService.getCompanyProfileById(new ObjectId(job.getCompany()));
+            
             return jobMapper.toJobSearchResponse(job, companyProfile);
         }).collect(Collectors.toList());
     }
@@ -126,16 +127,41 @@ public class JobServiceImpl implements JobService {
                 .orElseThrow(() -> new AppException(ErrorCode.INVALID_TOKEN));
 
         job.setCompany(company.getId().toString());
-        Job savejob = jobRepository.save(job);
         Detail detail = new Detail(request.getDesc(), request.getRequirements());
         job.setDetail(detail);
+        Job saveJob = jobRepository.save(job);
         if (company.getJobPosts() == null) {
             List<ObjectId> jobs = new ArrayList<ObjectId>();
             company.setJobPosts(jobs);
         }
-
-        company.getJobPosts().add(savejob.getId());
+        company.getJobPosts().add(saveJob.getId());
         companyRepository.save(company);
-        return jobMapper.toJobResponse(savejob);
+        return jobMapper.toJobResponse(saveJob);
     }
+
+    @Override
+    public JobSearchResponse getJobDetail(ObjectId jobId) {
+        Job job = jobRepository.findById(jobId)
+                    .orElseThrow(() -> new AppException(ErrorCode.JOB_NOT_FOUND));
+        
+        CompanyProfileResponse response = companyService.getCompanyProfileById(new ObjectId(job.getCompany()));
+        return jobMapper.toJobSearchResponse(job, response);
+    }
+
+    @Override
+    public List<JobSearchResponse> getSimilarJobs(JobSearchResponse job) {
+        Query query = new Query();
+        query.addCriteria(new Criteria().orOperator(
+            Criteria.where("jobTitle").regex(job.getJobTitle(), "i")
+        ));
+        query.limit(6);
+        query.with(Sort.by(Sort.Order.desc("_id")));
+
+        List<Job> similarJobs = mongoTemplate.find(query, Job.class);
+        return similarJobs.stream()
+                .map(j -> jobMapper.toJobSearchResponse(j, companyService.getCompanyProfileById(new ObjectId(j.getCompany()))))
+                .collect(Collectors.toList());
+    }
+
+   
 }

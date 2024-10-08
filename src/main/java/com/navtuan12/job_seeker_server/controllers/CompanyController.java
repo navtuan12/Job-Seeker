@@ -1,5 +1,6 @@
 package com.navtuan12.job_seeker_server.controllers;
 
+import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.navtuan12.job_seeker_server.dto.request.company.CompanyLoginRequest;
 import com.navtuan12.job_seeker_server.dto.request.company.CompanyRegisterRequest;
 import com.navtuan12.job_seeker_server.dto.response.ApiResponse;
+import com.navtuan12.job_seeker_server.dto.response.CompanyIdResponse;
 import com.navtuan12.job_seeker_server.dto.response.CompanyProfileResponse;
 import com.navtuan12.job_seeker_server.dto.response.CompanyRegisterResponse;
 import com.navtuan12.job_seeker_server.services.CompanyService;
@@ -71,7 +73,12 @@ public class CompanyController {
     }
 
     @GetMapping("/get-company/{companyId}")
-    public String getMethodName4(@PathVariable String comnapyId) {
-        return new String();
+    public ApiResponse<CompanyIdResponse> getMethodName4(@PathVariable ObjectId companyId, HttpServletRequest request) {
+        String token = jwtService.getTokenFromRequest(request);
+        String email = jwtService.getPayloadFromToken(token);
+        ApiResponse<CompanyIdResponse> response = new ApiResponse<CompanyIdResponse>();
+        response.setSuccess(true);
+        response.setResult(companyService.getCompanyId(companyId, email));
+        return response;
     }
 }

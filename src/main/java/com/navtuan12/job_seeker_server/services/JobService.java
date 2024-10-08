@@ -13,4 +13,6 @@ public interface JobService {
     List<JobSearchResponse> jobSearch(JobSearchRequest request);
 
     JobSearchResponse getJobDetail(ObjectId jobId);
+    List<JobSearchResponse> getSimilarJobs(JobSearchResponse job);
+    
 }
