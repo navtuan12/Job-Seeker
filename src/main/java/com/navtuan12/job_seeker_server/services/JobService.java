@@ -1,6 +1,7 @@
 package com.navtuan12.job_seeker_server.services;
 
 import java.util.List;
+import org.bson.types.ObjectId;
 import com.navtuan12.job_seeker_server.dto.request.job.JobSearchRequest;
 import com.navtuan12.job_seeker_server.dto.request.job.JobUploadRequest;
 import com.navtuan12.job_seeker_server.dto.response.JobResponse;
@@ -10,4 +11,6 @@ public interface JobService {
 
     JobResponse uploadJob(JobUploadRequest request, String companyEmail);
     List<JobSearchResponse> jobSearch(JobSearchRequest request);
+
+    JobSearchResponse getJobDetail(ObjectId jobId);
 }

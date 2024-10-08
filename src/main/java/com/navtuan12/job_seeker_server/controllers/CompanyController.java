@@ -20,7 +20,6 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-
 @RestController
 @RequestMapping("/companies")
 @RequiredArgsConstructor

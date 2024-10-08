@@ -1,6 +1,7 @@
 package com.navtuan12.job_seeker_server.controllers;
 
 import java.util.List;
+import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.navtuan12.job_seeker_server.dto.request.job.JobSearchRequest;
 import com.navtuan12.job_seeker_server.dto.request.job.JobUploadRequest;
@@ -71,7 +71,10 @@ public class JobsController {
     }
 
     @GetMapping("/get-job-detail/{jobId}")
-    public String getMethodName1(@RequestParam String param) {
-        return new String();
+    public ApiResponse<JobSearchResponse> getJobDetail(@PathVariable ObjectId id) {
+        ApiResponse<JobSearchResponse> response = new ApiResponse<JobSearchResponse>();
+        response.setSuccess(true);
+        response.setResult(jobService.)
+        return response;
     }
 }

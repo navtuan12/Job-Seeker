@@ -31,16 +31,19 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeHttpRequests(
-                request -> request.requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS)
-                        .permitAll().requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS)
-                        .permitAll().anyRequest().authenticated());
+                request -> request.requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
+                            .requestMatchers(HttpMethod.GET, PUBLIC_GET_ENDPOINTS).permitAll()
+                            .anyRequest().authenticated());
 
         httpSecurity.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.decoder(jwtDecoder())));
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.cors(cfg -> cfg.configurationSource(corsFilter()));
         return httpSecurity.build();
     }
-    private CorsConfigurationSource corsFilter() {
+
+
+    @Bean
+    CorsConfigurationSource corsFilter() {
         CorsConfiguration cfg = new CorsConfiguration();
         cfg.setAllowedOrigins(Arrays.asList("*"));
         cfg.setAllowedMethods(Arrays.asList("*"));
@@ -53,7 +56,6 @@ public class SecurityConfig {
     @Bean
     JwtDecoder jwtDecoder() {
         SecretKeySpec jwtSpec = new SecretKeySpec(SECRET_KEY.getBytes(), "HS512");
-
         return NimbusJwtDecoder.withSecretKey(jwtSpec).macAlgorithm(MacAlgorithm.HS512).build();
     }
 }
