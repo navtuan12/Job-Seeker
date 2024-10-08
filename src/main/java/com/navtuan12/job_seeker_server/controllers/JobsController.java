@@ -73,8 +73,10 @@ public class JobsController {
     @GetMapping("/get-job-detail/{jobId}")
     public ApiResponse<JobSearchResponse> getJobDetail(@PathVariable ObjectId id) {
         ApiResponse<JobSearchResponse> response = new ApiResponse<JobSearchResponse>();
+        JobSearchResponse job = jobService.getJobDetail(id);
         response.setSuccess(true);
-        response.setResult(jobService.)
+        response.setResult(job);
+        response.addAdditionalProperty("similarJobs", jobService.getSimilarJobs(job));
         return response;
     }
 }

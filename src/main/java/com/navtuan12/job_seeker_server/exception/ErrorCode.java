@@ -17,6 +17,8 @@ public enum ErrorCode {
     WRONG_PASSWORD(1007, "Wrong password"),
     USER_INVALID(1008, "Not authorized"),
     INVALID_TOKEN(1009, "Invalid token"),
+    JOB_NOT_FOUND(1010, "Job not found"),
+    COMPANY_NOT_FOUND(1011, "Company not found"),
     ;
     private int code;
     private String message;

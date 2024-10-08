@@ -25,5 +25,6 @@ public class Company {
     private String location;
     private String about;
     private List<ObjectId> jobPosts;
-    private String verified;
+    private boolean verified;
+    private String cpassword;
 }

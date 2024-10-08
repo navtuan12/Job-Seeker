@@ -1,9 +1,7 @@
 package com.navtuan12.job_seeker_server.dto.response;
 
-import java.util.Date;
 import java.util.List;
 import org.bson.types.ObjectId;
-import com.navtuan12.job_seeker_server.models.Detail;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,18 +14,10 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class JobResponse {
+public class CompanyIdResponse {
     ObjectId id;
-    String company;
-    String jobTitle;
-    String jobType;
-    String location;
-    int salary;
-    int vacancies;
-    int experience;
-    Detail detail;
-    List<ObjectId> application;
-    Date createdAt;
-    Date updatedAt;
-
+    String name;
+    String email;
+    List<JobResponse> jobPosts;
+    boolean verified;
 }

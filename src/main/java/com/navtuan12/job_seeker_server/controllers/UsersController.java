@@ -59,7 +59,7 @@ public class UsersController {
         return response;
     }
 
-    @PutMapping("/update")
+    @PutMapping("/update-user")
     public ApiResponse<UserResponse> updateUser(@RequestBody UserUpdateRequest request,
             HttpServletRequest httpRequest) {
         String token = jwtService.getTokenFromRequest(httpRequest);
