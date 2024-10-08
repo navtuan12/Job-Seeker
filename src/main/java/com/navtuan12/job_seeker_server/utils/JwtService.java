@@ -23,25 +23,22 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtService {
-    
+
     @Value("${jwt.SIGNER_KEY}")
-    @NonFinal 
+    @NonFinal
     String SECRET_KEY;
 
     public String generatorToken(String email) {
-        //define algorithm
+        // define algorithm
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
-        //define payload 
-        JWTClaimsSet claimSet = new JWTClaimsSet.Builder()
-            .subject(email)
-            .issuer("navtuan12")
-            .issueTime(new Date())
-            .expirationTime(new Date(
-                Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()
-            ))
-            .build();
-        
+        // define payload
+        JWTClaimsSet claimSet =
+                new JWTClaimsSet.Builder().subject(email).issuer("navtuan12").issueTime(new Date())
+                        .expirationTime(
+                                new Date(Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()))
+                        .build();
+
         Payload payload = new Payload(claimSet.toJSONObject());
 
         JWSObject jwsObject = new JWSObject(header, payload);

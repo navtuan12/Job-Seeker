@@ -22,6 +22,7 @@ import com.navtuan12.job_seeker_server.exception.AppException;
 import com.navtuan12.job_seeker_server.exception.ErrorCode;
 import com.navtuan12.job_seeker_server.mapper.JobMapper;
 import com.navtuan12.job_seeker_server.models.Company;
+import com.navtuan12.job_seeker_server.models.Detail;
 import com.navtuan12.job_seeker_server.models.Job;
 import com.navtuan12.job_seeker_server.repository.CompanyRepository;
 import com.navtuan12.job_seeker_server.repository.JobRepository;
@@ -34,8 +35,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class JobServiceImpl implements JobService{
-   
+public class JobServiceImpl implements JobService {
+
     JobRepository jobRepository;
     MongoTemplate mongoTemplate;
     JobMapper jobMapper;
@@ -66,19 +67,18 @@ public class JobServiceImpl implements JobService{
         // Experience filtering
         if (exp != null && !exp.isEmpty()) {
             int[] experienceRange = parseExperienceRange(exp);
-            query.addCriteria(Criteria.where("experience")
-                    .gte(experienceRange[0])
-                    .lte(experienceRange[1]));
+            query.addCriteria(
+                    Criteria.where("experience").gte(experienceRange[0]).lte(experienceRange[1]));
         }
 
         // Search filtering
         if (search != null && !search.isEmpty()) {
-            query.addCriteria(new Criteria().orOperator(
-                    Criteria.where("jobTitle").regex(search, "i")));
+            query.addCriteria(
+                    new Criteria().orOperator(Criteria.where("jobTitle").regex(search, "i")));
         }
 
-         // Sorting
-         if (sort != null) {
+        // Sorting
+        if (sort != null) {
             switch (sort) {
                 case "Newest":
                     query.with(Sort.by(Order.desc("createdAt")));
@@ -102,7 +102,8 @@ public class JobServiceImpl implements JobService{
         // Execute query
         List<Job> jobs = mongoTemplate.find(query, Job.class);
         return jobs.stream().map(job -> {
-            CompanyProfileResponse companyProfile = companyService.getCompanyProfileById(new ObjectId(job.getCompany()));
+            CompanyProfileResponse companyProfile =
+                    companyService.getCompanyProfileById(new ObjectId(job.getCompany()));
             return jobMapper.toJobSearchResponse(job, companyProfile);
         }).collect(Collectors.toList());
     }
@@ -111,7 +112,7 @@ public class JobServiceImpl implements JobService{
         String[] expParts = exp.split("-");
         int expStart = Integer.parseInt(expParts[0]) - 1;
         int expEnd = Integer.parseInt(expParts[1]) + 1;
-        return new int[]{expStart, expEnd};
+        return new int[] {expStart, expEnd};
     }
 
     @Override
@@ -122,11 +123,12 @@ public class JobServiceImpl implements JobService{
         job.setUpdatedAt(now);
 
         Company company = companyRepository.findByEmail(companyEmail)
-                            .orElseThrow(() -> new AppException(ErrorCode.INVALID_TOKEN));
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_TOKEN));
 
         job.setCompany(company.getId().toString());
         Job savejob = jobRepository.save(job);
-
+        Detail detail = new Detail(request.getDesc(), request.getRequirements());
+        job.setDetail(detail);
         if (company.getJobPosts() == null) {
             List<ObjectId> jobs = new ArrayList<ObjectId>();
             company.setJobPosts(jobs);

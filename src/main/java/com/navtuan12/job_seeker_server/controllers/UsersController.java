@@ -1,5 +1,6 @@
 package com.navtuan12.job_seeker_server.controllers;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -23,13 +24,12 @@ import lombok.experimental.FieldDefaults;
 @RequestMapping("/users")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class UsersController {
 
     UserService userService;
-
-
     JwtService jwtService;
-    
+
     @PostMapping("/login")
     public ApiResponse<UserResponse> login(@RequestBody UserLoginRequest request) {
         ApiResponse<UserResponse> response = new ApiResponse<>();
@@ -38,19 +38,19 @@ public class UsersController {
         response.addAdditionalProperty("token", jwtService.generatorToken(request.getEmail()));
         return response;
     }
-    
+
     @PostMapping("/register")
     public ApiResponse<UserResponse> createUser(@RequestBody @Valid UserRegisterRequest request) {
         ApiResponse<UserResponse> response = new ApiResponse<>();
         response.setSuccess(true);
-        response.setResult(userService.register(request)); 
+        response.setResult(userService.register(request));
         response.setMessage("Account created successfully");
         response.addAdditionalProperty("token", jwtService.generatorToken(request.getEmail()));
         return response;
     }
 
     @GetMapping("/get-user")
-    public ApiResponse<UserResponse> getUser(HttpServletRequest request){
+    public ApiResponse<UserResponse> getUser(HttpServletRequest request) {
         String token = jwtService.getTokenFromRequest(request);
         String email = jwtService.getPayloadFromToken(token);
         ApiResponse<UserResponse> response = new ApiResponse<>();
@@ -60,7 +60,8 @@ public class UsersController {
     }
 
     @PutMapping("/update")
-    public ApiResponse<UserResponse> updateUser(@RequestBody UserUpdateRequest request, HttpServletRequest httpRequest) {
+    public ApiResponse<UserResponse> updateUser(@RequestBody UserUpdateRequest request,
+            HttpServletRequest httpRequest) {
         String token = jwtService.getTokenFromRequest(httpRequest);
         String email = jwtService.getPayloadFromToken(token);
         ApiResponse<UserResponse> response = new ApiResponse<>();

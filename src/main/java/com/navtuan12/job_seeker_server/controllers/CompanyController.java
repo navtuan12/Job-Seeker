@@ -1,5 +1,6 @@
 package com.navtuan12.job_seeker_server.controllers;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,13 +25,15 @@ import lombok.experimental.FieldDefaults;
 @RequestMapping("/companies")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CompanyController {
-    
+
     CompanyService companyService;
     JwtService jwtService;
 
     @PostMapping("/register")
-    public ApiResponse<CompanyRegisterResponse> register(@RequestBody CompanyRegisterRequest request) {
+    public ApiResponse<CompanyRegisterResponse> register(
+            @RequestBody CompanyRegisterRequest request) {
         ApiResponse<CompanyRegisterResponse> response = new ApiResponse<CompanyRegisterResponse>();
         response.setSuccess(true);
         response.setMessage("Company Account Created Successfully");
@@ -57,7 +60,7 @@ public class CompanyController {
         response.setResult(companyService.getCompanyProfileByEmail(email));
         return response;
     }
-    
+
     @GetMapping("/get-company-joblist")
     public String getMethodName2(@RequestParam String param) {
         return new String();
