@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class UserRegisterRequest {
     @NotBlank(message = "FIRSTNAME_INVALID")

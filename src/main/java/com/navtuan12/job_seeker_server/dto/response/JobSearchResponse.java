@@ -1,10 +1,10 @@
 package com.navtuan12.job_seeker_server.dto.response;
 
 import java.util.Date;
+import java.util.List;
 import org.bson.types.ObjectId;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.navtuan12.job_seeker_server.models.Detail;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,19 +18,17 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserResponse {
-
-    //remove private fields and use lombok @Data annotation
+public class JobSearchResponse {
     ObjectId id;
-    private String firstName;
-    private String lastName;
-    private String email;
-    private String contact;
-    private String location;
-    private String accountType;
-    private String jobTitle;
-    private String about;
+    CompanyProfileResponse company;
+    String jobTitle;
+    String jobType;
+    String location;
+    int salary;
+    int vacancies;
+    int experience;
+    Detail detail;
+    List<ObjectId> application;
     Date createdAt;
     Date updatedAt;
-
 }
