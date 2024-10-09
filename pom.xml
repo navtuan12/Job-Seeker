@@ -14,6 +14,13 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>job-seeker-server</name>
 	<description>Demo project for Spring Boot</description>
+	<distributionManagement>
+		<repository>
+		  <id>github</id>
+		  <name>GitHub navtuan12 Apache Maven Packages</name>
+		  <url>https://maven.pkg.github.com/navtuan12/Job-Seeker-Java-Spring-server</url>
+		</repository>
+	 </distributionManagement>
 	<!-- <url />
 	<licenses>
 		<license />
@@ -107,13 +114,11 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <annotationProcessorPaths>
-                        <!-- Lombok annotation processor -->
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                             <version>1.18.24</version>
                         </path>
-                        <!-- MapStruct annotation processor -->
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
@@ -122,6 +127,18 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+			<!-- <plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+				</configuration>
+			</plugin> -->
 		</plugins>
 	</build>
 </project>

@@ -4,6 +4,7 @@ import java.util.List;
 import org.bson.types.ObjectId;
 import com.navtuan12.job_seeker_server.dto.request.company.CompanyLoginRequest;
 import com.navtuan12.job_seeker_server.dto.request.company.CompanyRegisterRequest;
+import com.navtuan12.job_seeker_server.dto.request.company.CompanyRequest;
 import com.navtuan12.job_seeker_server.dto.response.CompanyIdResponse;
 import com.navtuan12.job_seeker_server.dto.response.CompanyProfileResponse;
 import com.navtuan12.job_seeker_server.dto.response.CompanyRegisterResponse;
@@ -16,4 +17,6 @@ public interface CompanyService {
     CompanyProfileResponse getCompanyProfileByEmail(String email);
     CompanyIdResponse getCompanyId(ObjectId companyId, String companyEmail);
     List<JobResponse> getJobsByCompanyId(ObjectId companyId);
+    List<CompanyProfileResponse> getCompany(CompanyRequest request);
+    CompanyIdResponse getCompanyIdByEmail(String email);
 }
