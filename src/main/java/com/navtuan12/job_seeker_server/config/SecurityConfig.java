@@ -21,9 +21,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final String[] PUBLIC_POST_ENDPOINTS =
-            {"/users/register", "/companies/register", "/users/login", "/companies/login"};
-    private final String[] PUBLIC_GET_ENDPOINTS = {"/jobs/find-jobs", "/companies"};
+    private final String[] PUBLIC_POST_ENDPOINTS = {"/users/register", "/companies/register"
+                                                    , "/users/login", "/companies/login"};
+
+    private final String[] PUBLIC_GET_ENDPOINTS = {"/jobs/find-jobs", "/companies"
+                                                    ,"/jobs/get-job-detail/{id}"};
 
     @Value("${jwt.SIGNER_KEY}")
     private String SECRET_KEY;
@@ -40,8 +42,7 @@ public class SecurityConfig {
         httpSecurity.cors(cfg -> cfg.configurationSource(corsFilter()));
         return httpSecurity.build();
     }
-
-
+    
     @Bean
     CorsConfigurationSource corsFilter() {
         CorsConfiguration cfg = new CorsConfiguration();

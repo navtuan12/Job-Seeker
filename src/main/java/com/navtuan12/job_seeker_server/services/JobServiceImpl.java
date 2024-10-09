@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 import com.navtuan12.job_seeker_server.dto.request.job.JobSearchRequest;
+import com.navtuan12.job_seeker_server.dto.request.job.JobUpdateRequest;
 import com.navtuan12.job_seeker_server.dto.request.job.JobUploadRequest;
 import com.navtuan12.job_seeker_server.dto.response.CompanyProfileResponse;
 import com.navtuan12.job_seeker_server.dto.response.JobResponse;
@@ -163,5 +164,13 @@ public class JobServiceImpl implements JobService {
                 .collect(Collectors.toList());
     }
 
-   
+    @Override
+    public JobResponse updateJob(ObjectId id, JobUpdateRequest request) {
+        Job job = jobRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.JOB_NOT_FOUND));
+
+        jobMapper.updateJob(job, request);
+        jobRepository.save(job);        
+        return jobMapper.toJobResponse(job);
+    }
 }

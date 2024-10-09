@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.navtuan12.job_seeker_server.dto.request.job.JobSearchRequest;
+import com.navtuan12.job_seeker_server.dto.request.job.JobUpdateRequest;
 import com.navtuan12.job_seeker_server.dto.request.job.JobUploadRequest;
 import com.navtuan12.job_seeker_server.dto.response.ApiResponse;
 import com.navtuan12.job_seeker_server.dto.response.JobResponse;
@@ -34,7 +35,7 @@ public class JobsController {
     JwtService jwtService;
 
     @PostMapping("/upload-job")
-    public ApiResponse<JobResponse> postMethodName(@RequestBody JobUploadRequest request,
+    public ApiResponse<JobResponse> uploadJob(@RequestBody JobUploadRequest request,
             HttpServletRequest httpRequest) {
         String token = jwtService.getTokenFromRequest(httpRequest);
         String companyEmail = jwtService.getPayloadFromToken(token);
@@ -45,11 +46,13 @@ public class JobsController {
         return response;
     }
 
-    @PutMapping("update-job/{jobId}")
-    public String putMethodName(@PathVariable String id, @RequestBody String entity) {
-        // TODO: process PUT request
-
-        return entity;
+    @PutMapping("/update-job/{jobId}")
+    public ApiResponse<JobResponse> updateJob(@RequestBody JobUpdateRequest request, @PathVariable ObjectId jobId) {
+        ApiResponse<JobResponse> response = new ApiResponse<JobResponse>();
+        response.setSuccess(true);
+        response.setMessage("Update Successfully");
+        response.setResult(jobService.updateJob(jobId, request));
+        return response;
     }
 
     @GetMapping("/find-jobs")
@@ -70,13 +73,18 @@ public class JobsController {
         return response;
     }
 
-    @GetMapping("/get-job-detail/{jobId}")
-    public ApiResponse<JobSearchResponse> getJobDetail(@PathVariable ObjectId id) {
+    @GetMapping("/get-job-detail/{id}")
+    public ApiResponse<JobSearchResponse> getJobDetail(@PathVariable("id") ObjectId id) {
         ApiResponse<JobSearchResponse> response = new ApiResponse<JobSearchResponse>();
         JobSearchResponse job = jobService.getJobDetail(id);
         response.setSuccess(true);
         response.setResult(job);
         response.addAdditionalProperty("similarJobs", jobService.getSimilarJobs(job));
         return response;
+    }
+
+    @DeleteMapping("/delete-job/{id}")
+    public ApiResponse<JobDeleteResponse> deleteJob(@PathVariable("id") ObjectId id){
+        
     }
 }
