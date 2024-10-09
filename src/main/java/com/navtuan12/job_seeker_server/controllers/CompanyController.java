@@ -1,16 +1,18 @@
 package com.navtuan12.job_seeker_server.controllers;
 
+import java.util.List;
 import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.navtuan12.job_seeker_server.dto.request.company.CompanyLoginRequest;
 import com.navtuan12.job_seeker_server.dto.request.company.CompanyRegisterRequest;
+import com.navtuan12.job_seeker_server.dto.request.company.CompanyRequest;
 import com.navtuan12.job_seeker_server.dto.response.ApiResponse;
 import com.navtuan12.job_seeker_server.dto.response.CompanyIdResponse;
 import com.navtuan12.job_seeker_server.dto.response.CompanyProfileResponse;
@@ -53,7 +55,7 @@ public class CompanyController {
     }
 
     @GetMapping("/get-company-profile")
-    public ApiResponse<CompanyProfileResponse> getMethodName1(HttpServletRequest request) {
+    public ApiResponse<CompanyProfileResponse> getCompanyProfile(HttpServletRequest request) {
         String token = jwtService.getTokenFromRequest(request);
         String email = jwtService.getPayloadFromToken(token);
         ApiResponse<CompanyProfileResponse> response = new ApiResponse<CompanyProfileResponse>();
@@ -62,18 +64,34 @@ public class CompanyController {
         return response;
     }
 
-    @GetMapping("/get-company-joblist")
-    public String getMethodName2(@RequestParam String param) {
-        return new String();
+    @GetMapping("/get-company-joblisting")
+    public ApiResponse<CompanyIdResponse> getCompanyJobList(HttpServletRequest request) {
+        String token = jwtService.getTokenFromRequest(request);
+        String email = jwtService.getPayloadFromToken(token);
+        ApiResponse<CompanyIdResponse> response = new ApiResponse<CompanyIdResponse>();
+        response.setSuccess(true);
+        response.setResult(companyService.getCompanyIdByEmail(email));
+        return response;
     }
 
-    @GetMapping("/get-company")
-    public String getMethodName3(@RequestParam String param) {
-        return new String();
+    @GetMapping
+    public ApiResponse<List<CompanyProfileResponse>> getCompany(@ModelAttribute CompanyRequest request) {
+        List<CompanyProfileResponse> companyResponse = companyService.getCompany(request);
+        int totalCompanies = companyResponse.size();
+        int limit = request.getLimit();
+        int numOfPages = (int) Math.ceil((double) totalCompanies / limit);
+        ApiResponse<List<CompanyProfileResponse>> response = new ApiResponse<List<CompanyProfileResponse>>();
+        response.setSuccess(true);
+        response.setResult(companyResponse);
+        response.addAdditionalProperty("total", totalCompanies);
+        response.addAdditionalProperty("page", request.getPageNum());
+        response.addAdditionalProperty("numOfPage", numOfPages);
+        
+        return response;
     }
 
     @GetMapping("/get-company/{companyId}")
-    public ApiResponse<CompanyIdResponse> getMethodName4(@PathVariable ObjectId companyId, HttpServletRequest request) {
+    public ApiResponse<CompanyIdResponse> getCompanyId(@PathVariable ObjectId companyId, HttpServletRequest request) {
         String token = jwtService.getTokenFromRequest(request);
         String email = jwtService.getPayloadFromToken(token);
         ApiResponse<CompanyIdResponse> response = new ApiResponse<CompanyIdResponse>();

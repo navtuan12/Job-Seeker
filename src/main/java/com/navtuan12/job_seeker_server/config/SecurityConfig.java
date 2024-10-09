@@ -23,7 +23,7 @@ public class SecurityConfig {
 
     private final String[] PUBLIC_POST_ENDPOINTS =
             {"/users/register", "/companies/register", "/users/login", "/companies/login"};
-    private final String[] PUBLIC_GET_ENDPOINTS = {"/jobs/find-jobs", "/companies/get-company"};
+    private final String[] PUBLIC_GET_ENDPOINTS = {"/jobs/find-jobs", "/companies"};
 
     @Value("${jwt.SIGNER_KEY}")
     private String SECRET_KEY;
