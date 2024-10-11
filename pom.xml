@@ -14,13 +14,13 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>job-seeker-server</name>
 	<description>Demo project for Spring Boot</description>
-	<distributionManagement>
+	<!-- <distributionManagement>
 		<repository>
 		  <id>github</id>
 		  <name>GitHub navtuan12 Apache Maven Packages</name>
 		  <url>https://maven.pkg.github.com/navtuan12/Job-Seeker-Java-Spring-server</url>
 		</repository>
-	 </distributionManagement>
+	 </distributionManagement> -->
 	<!-- <url />
 	<licenses>
 		<license />

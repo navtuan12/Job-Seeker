@@ -17,4 +17,6 @@ public interface JobService {
     List<JobSearchResponse> getSimilarJobs(JobSearchResponse job);
     
     JobResponse updateJob(ObjectId id, JobUpdateRequest request);
+
+    void deleteJob(ObjectId jobId);
 }

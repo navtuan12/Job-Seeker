@@ -3,6 +3,7 @@ package com.navtuan12.job_seeker_server.controllers;
 import java.util.List;
 import org.bson.types.ObjectId;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,7 +85,11 @@ public class JobsController {
     }
 
     @DeleteMapping("/delete-job/{id}")
-    public ApiResponse<JobDeleteResponse> deleteJob(@PathVariable("id") ObjectId id){
-        
+    public ApiResponse deleteJob(@PathVariable("id") ObjectId id){
+        ApiResponse response = new ApiResponse();
+        response.setSuccess(true);
+        response.setMessage("Job deleted successfully");
+        jobService.deleteJob(id);
+        return response;
     }
 }

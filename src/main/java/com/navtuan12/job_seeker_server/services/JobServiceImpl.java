@@ -173,4 +173,19 @@ public class JobServiceImpl implements JobService {
         jobRepository.save(job);        
         return jobMapper.toJobResponse(job);
     }
+
+    @Override
+    public void deleteJob(ObjectId jobId) {
+        Job job = jobRepository.findById(jobId)
+                        .orElseThrow(() -> new AppException(ErrorCode.JOB_NOT_FOUND));
+
+        Company company = companyRepository.findById(new ObjectId(job.getCompany()))
+                            .orElseThrow(() -> new AppException(ErrorCode.COMPANY_NOT_FOUND));
+
+       company.getJobPosts().remove(jobId);
+       companyRepository.save(company);
+       jobRepository.deleteById(jobId); 
+    }
+
+    
 }
