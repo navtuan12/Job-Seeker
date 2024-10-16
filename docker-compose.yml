@@ -19,9 +19,9 @@ services:
     ports:
       - "8800:8800"
     environment:
-      - MONGO_URI=mongodb://mongo:27017
+      - MONGO_URI=
       - MONGO_DATABASE=JobSeeker
-      - SIGNER_KEY=ynSJep0Kgp49jZWpT95+KFcqxNRPCAMvyMaHy8EaN+jD9rl+uO6Nl1uk9IBKDKLC
+      - SIGNER_KEY=
     depends_on:
       - mongo
     networks:
