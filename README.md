@@ -50,11 +50,19 @@ https://docs.docker.com/engine/install/
 git clone https://github.com/navtuan12/Online-Job-Seeker-ReactJs-Spring-MongoDB.git
 cd Online-Job-Seeker-ReactJs-Spring-MongoDB
 ```
-
-**3. Run** **`docker-compose.yml`**
+**3. Config** **`docker-compose.yml`**
+```yml
+  environment:
+        - MONGO_URI=
+        - MONGO_DATABASE=JobSeeker
+        - SIGNER_KEY=
+```
+**`MONGO_URI`** : your MongoDB connection link
+**`SIGNER_KEY`**: JWT signer key --> Secret Key Generator: https://generate-random.org/encryption-key-generator
+**4. Run** 
 ```sh
 docker compose up --build -d
 ```
 
-**4. Go to browser**
+**5. Go to browser**
 http://localhost:3000
