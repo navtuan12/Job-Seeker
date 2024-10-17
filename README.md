@@ -57,7 +57,7 @@ cd Online-Job-Seeker-ReactJs-Spring-MongoDB
         - MONGO_DATABASE=JobSeeker
         - SIGNER_KEY=
 ```
-**`MONGO_URI`** : your MongoDB connection link.
+**`MONGO_URI`** : your MongoDB connection link. **Example**: *mongodb://localhost:27017*
 
 **`SIGNER_KEY`**: JWT signer key --> Secret Key Generator: https://generate-random.org/encryption-key-generator
 
