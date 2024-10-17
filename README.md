@@ -43,7 +43,7 @@
 ### Installation
 
 **1. Install Docker**
-[link text] (https://docs.docker.com/engine/install/)
+https://docs.docker.com/engine/install/
 
 **2. Clone the repository:**
 ```sh
@@ -57,4 +57,4 @@ docker compose up --build -d
 ```
 
 **4. Go to browser**
-[link text] (http://localhost:3000)
+http://localhost:3000
