@@ -60,6 +60,7 @@ cd Online-Job-Seeker-ReactJs-Spring-MongoDB
 **`MONGO_URI`** : your MongoDB connection link.
 
 **`SIGNER_KEY`**: JWT signer key --> Secret Key Generator: https://generate-random.org/encryption-key-generator
+
 **4. Run** 
 ```sh
 docker compose up --build -d
