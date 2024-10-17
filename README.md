@@ -38,10 +38,7 @@
 
 ### Prerequisites
 
-- **Java 11**: Ensure you have JDK 11 installed.
-- **Maven**: Ensure you have Maven installed.
-- **MongoDB**: Ensure you have MongoDB installed and running.
-- **NodeJs**: Ensure you have NodeJs 20.11.1 installed.
+- **Docker Engine**
 ### Installation
 
 **1. Clone the repository:**
@@ -50,68 +47,13 @@ git clone https://github.com/navtuan12/Job-Seeker.git
 cd Job-Seeker
 ```
 
-**Client**
+**2. Install Docker**
+[link text] (https://docs.docker.com/engine/install/)
 
-Install dependencies:
-
+**3. Run **`docker-compose.yml`**
 ```sh
-cd client
-npm install
-```
-Run the application:
-
-```sh
-npm run dev
-```
-**Server**
-
-Update the JDK version in pom.xml: Ensure the *<source>* and *<target>* versions are set to **11**
-
-```xml
-<build>
-    <plugins>
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.8.1</version>
-            <configuration>
-                <source>11</source>
-                <target>11</target>
-                <annotationProcessorPaths>
-                    <path>
-                        <groupId>org.projectlombok</groupId>
-                        <artifactId>lombok</artifactId>
-                        <version>1.18.24</version>
-                    </path>
-                    <path>
-                        <groupId>org.mapstruct</groupId>
-                        <artifactId>mapstruct-processor</artifactId>
-                        <version>1.5.2.Final</version>
-                    </path>
-                </annotationProcessorPaths>
-            </configuration>
-        </plugin>
-    </plugins>
-</build>
+docker compose up --build -d
 ```
 
-Create *.env* file base on *.env.example*:
-```env
-MONGO_DATABASE= <datebase-name>
-MONGO_USER= <mongodb-user>
-MONGO_PASSWORD= <mongodb-password>
-MONGO_CLUSTER= <mongodb-cluster>
-SIGNER_KEY= <jwt-signer-key>
-```
-
-Install dependencies:
-
-```sh
-mvn clean install
-```
-
-Run the application:
-
-```sh
-mvn spring-boot:run
-```
+**4. Go to browser**
+[link text] (http://localhost:3000)
