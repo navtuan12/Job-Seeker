@@ -51,7 +51,7 @@ git clone https://github.com/navtuan12/Online-Job-Seeker-ReactJs-Spring-MongoDB.
 cd Online-Job-Seeker-ReactJs-Spring-MongoDB
 ```
 
-**3. Run **`docker-compose.yml`** **
+**3. Run** **`docker-compose.yml`**
 ```sh
 docker compose up --build -d
 ```
