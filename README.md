@@ -47,8 +47,8 @@ https://docs.docker.com/engine/install/
 
 **2. Clone the repository:**
 ```sh
-git clone https://github.com/navtuan12/Online-Job-Seeker-ReactJs-Spring-MongoDB.git
-cd Online-Job-Seeker-ReactJs-Spring-MongoDB
+git clone https://github.com/navtuan12/Job-Seeker.git
+cd Job-Seeker
 ```
 **3. Config** **`docker-compose.yml`**
 ```yml
