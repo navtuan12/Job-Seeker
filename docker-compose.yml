@@ -19,9 +19,9 @@ services:
     ports:
       - "8800:8800"
     environment:
-      - MONGO_URI= mongodb://localhost:27017
+      - MONGO_URI=mongodb://localhost:27017
       - MONGO_DATABASE=JobSeeker
-      - SIGNER_KEY= secrets.SIGNER_KEY
+      - SIGNER_KEY=${SIGNER_KEY}
     depends_on:
       - mongo
     networks:
