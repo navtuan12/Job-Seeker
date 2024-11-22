@@ -1,0 +1,57 @@
+name: Job-Seeker CI/CD 
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        env:
+          MONGO_URI: mongodb://localhost:27017 #your MongoDB connection link. Example: mongodb://localhost:27017
+          SIGNER_KEY: secrets.SIGNER_KEY
+          MONGO_INITDB_DATABASE: JobSeeker
+        options: >-
+          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 8
+      uses: actions/setup-java@v3
+      with:
+        java-version: '8'
+        cache: maven
+
+    - name: Build with Maven
+      run: mvn -B package --file server/pom.xml
+
+    #- name: Install dependencies
+    #  run: mvn install -DskipTests
+
+    #- name: Run tests
+    #  run: mvn test
+
+    - name: Build Docker image
+      run: docker build -t job-seeker .
+
+    - name: Run application
+      run: docker-compose up --build -d
+
+    - name: Access application
+      run: curl http://localhost:3000
