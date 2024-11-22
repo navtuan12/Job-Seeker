@@ -42,7 +42,7 @@ jobs:
     - name: Install MongoDB client
       run: sudo apt-get update && sudo apt-get install -y mongodb-clients
 
-    - name: Wait for MongoDB to be read
+    - name: Wait for MongoDB to be ready
       env:
         MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
         MONGO_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@mongo:27017
@@ -63,6 +63,7 @@ jobs:
       env:
         MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
         MONGO_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@mongo:27017
+        SIGNER_KEY: ${{ secrets.SIGNER_KEY }}
       run: mvn test --file server/pom.xml
 
     - name: Build Docker image
