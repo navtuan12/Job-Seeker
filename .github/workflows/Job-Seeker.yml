@@ -22,8 +22,10 @@ jobs:
           MONGO_INITDB_ROOT_USERNAME: root
           MONGO_INITDB_ROOT_PASSWORD: secrets.MONGO_INITDB_ROOT_PASSWORD
           MONGO_INITDB_DATABASE: JobSeeker
+          MONGO_URI: mongodb://localhost:27017
+          SIGNER_KEY: ${{ secrets.SIGNER_KEY }}  
         options: >-
-          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
+          --health-cmd mongo  #"mongo --eval 'db.runCommand({ ping: 1 })'"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
