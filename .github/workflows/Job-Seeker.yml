@@ -19,8 +19,8 @@ jobs:
         ports:
           - 27017:27017
         env:
-          MONGO_INITDB_ROOT_USERNAME: root
-          MONGO_INITDB_ROOT_PASSWORD: secrets.MONGO_INITDB_ROOT_PASSWORD
+          #MONGO_INITDB_ROOT_USERNAME: root
+          #MONGO_INITDB_ROOT_PASSWORD: secrets.MONGO_INITDB_ROOT_PASSWORD
           MONGO_INITDB_DATABASE: JobSeeker
           MONGO_URI: mongodb://localhost:27017
           SIGNER_KEY: ${{ secrets.SIGNER_KEY }}  
