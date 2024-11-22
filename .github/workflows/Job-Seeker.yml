@@ -40,6 +40,18 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         cache: maven
+    
+    - name: Wait for MongoDB to be ready
+      run: |
+        for i in {1..30}; do
+          if mongo --host mongo --eval 'db.runCommand({ ping: 1 })'; then
+            echo "MongoDB is up and running!"
+            break
+          fi
+          echo "Waiting for MongoDB to start..."
+          sleep 2
+        done
+  
 
     - name: Build with Maven
       run: mvn -B package --file server/pom.xml
