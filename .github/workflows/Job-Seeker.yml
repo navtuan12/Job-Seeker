@@ -19,11 +19,9 @@ jobs:
         ports:
           - 27017:27017
         env:
-          #MONGO_INITDB_ROOT_USERNAME: root
-          #MONGO_INITDB_ROOT_PASSWORD: secrets.MONGO_INITDB_ROOT_PASSWORD
-          MONGO_INITDB_DATABASE: JobSeeker
-          MONGO_URI: mongodb://mongo:27017
-          SIGNER_KEY: ${{ secrets.SIGNER_KEY }}  
+          MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_USER }}
+          MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
+          MONGO_INITDB_DATABASE: ${{ secrets.MONGO_DATABASE }}
         options: >-
           --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"  
           --health-interval 10s
@@ -45,6 +43,9 @@ jobs:
       run: sudo apt-get update && sudo apt-get install -y mongodb-clients
 
     - name: Wait for MongoDB to be ready
+      env:
+        MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
+        MONGO_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@mongo:27017
       run: |
         for i in {1..30}; do
           if mongo --host mongo --eval 'db.runCommand({ ping: 1 })'; then
@@ -54,18 +55,25 @@ jobs:
           echo "Waiting for MongoDB to start..."
           sleep 2
         done
-  
 
     - name: Build with Maven
       run: mvn -B package --file server/pom.xml
 
     - name: Run tests
+      env:
+        MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
+        MONGO_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@mongo:27017
+        SIGNER_KEY: ${{ secrets.SIGNER_KEY }}
       run: mvn test --file server/pom.xml
 
     - name: Build Docker image
       run: docker build -t job-seeker .
 
     - name: Run application
+      env:
+        MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
+        MONGO_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@mongo:27017
+        SIGNER_KEY: ${{ secrets.SIGNER_KEY }}
       run: docker-compose up --build -d
 
     - name: Access application
