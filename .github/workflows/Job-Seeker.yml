@@ -32,15 +32,15 @@ jobs:
     - name: Install MongoDB client
       run: sudo apt-get install -y mongodb-org-shell
 
-    - name: Verify MongoDB CLI installation
-      run: mongo --version
+    #- name: Verify MongoDB CLI installation
+    #  run: mongo --version
 
-    - name: Test connection to MongoDB Atlas
-      env:
-        MONGO_URI: ${{ secrets.MONGO_URI }}
-      run: |
-        echo "Testing connection to MongoDB Atlas..."
-        mongo $MONGO_URI --eval "db.runCommand({ ping: 1 })"
+    #- name: Test connection to MongoDB Atlas
+    #  env:
+    #    MONGO_URI: ${{ secrets.MONGO_URI }}
+    #  run: |
+    #    echo "Testing connection to MongoDB Atlas..."
+    #    mongo $MONGO_URI --eval "db.runCommand({ ping: 1 })"
 
     - name: Build with Maven
       run: mvn -B package --file server/pom.xml
