@@ -13,21 +13,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo:8.0.3
-        ports:
-          - 27017:27017
-        env:
-          #MONGO_INITDB_ROOT_USERNAME: ${{ secrets.MONGO_USER }}
-          #MONGO_INITDB_ROOT_PASSWORD: ${{ secrets.MONGO_PASSWORD }}
-          MONGO_INITDB_DATABASE: ${{ secrets.MONGO_DATABASE }}
-        options: >-
-          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"  
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
@@ -38,23 +23,16 @@ jobs:
         java-version: '8'
         distribution: 'adopt'
         cache: maven
-    
-    #- name: Install MongoDB client
-    #  run: sudo apt-get update && sudo apt-get install -y mongodb-clients
 
-    #- name: Wait for MongoDB to be ready
-    #  env:
-    #    MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
-    #    MONGO_URI: mongodb://localhost:27017/
-    #  run: |
-    #    for i in {1..30}; do
-    #      if mongo --host mongo --eval 'db.runCommand({ ping: 1 })'; then
-    #        echo "MongoDB is up and running!"
-    #        break
-    #      fi
-    #      echo "Waiting for MongoDB to start..."
-    #      sleep 2
-    #    done
+    - name: Install MongoDB client
+      run: sudo apt-get update && sudo apt-get install -y mongodb-clients
+
+    - name: Test connection to MongoDB Atlas
+      env:
+        MONGO_URI: ${{ secrets.MONGO_URI }}
+      run: |
+        echo "Testing connection to MongoDB Atlas..."
+        mongo $MONGO_URI --eval "db.runCommand({ ping: 1 })"
 
     - name: Build with Maven
       run: mvn -B package --file server/pom.xml
@@ -62,7 +40,7 @@ jobs:
     - name: Run tests
       env:
         MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
-        MONGO_URI: mongodb://localhost:27017/
+        MONGO_URI: ${{ secrets.MONGO_URI }}
         SIGNER_KEY: ${{ secrets.SIGNER_KEY }}
       run: mvn test --file server/pom.xml
 
@@ -72,7 +50,7 @@ jobs:
     - name: Run application
       env:
         MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
-        MONGO_URI: mongodb://localhost:27017/
+        MONGO_URI: ${{ secrets.MONGO_URI }}
         SIGNER_KEY: ${{ secrets.SIGNER_KEY }}
       run: docker-compose up --build -d
 
