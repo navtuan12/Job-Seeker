@@ -10,7 +10,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -30,11 +29,11 @@ jobs:
         echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/6.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list
         sudo apt-get update
 
+    - name: Install MongoDB client
+      run: sudo apt-get install -y mongodb-org-shell
+
     - name: Verify MongoDB CLI installation
       run: mongo --version
-
-    - name: Install MongoDB client
-      run: sudo apt-get update && sudo apt-get install -y mongodb-org-shell
 
     - name: Test connection to MongoDB Atlas
       env:
