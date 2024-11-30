@@ -45,7 +45,7 @@ jobs:
     - name: Wait for MongoDB to be ready
       env:
         MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
-        MONGO_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@mongo:27017
+        MONGO_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@web.ehje056.mongodb.net
       run: |
         for i in {1..30}; do
           if mongo --host mongo --eval 'db.runCommand({ ping: 1 })'; then
@@ -62,7 +62,7 @@ jobs:
     - name: Run tests
       env:
         MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
-        MONGO_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@mongo:27017
+        MONGO_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@web.ehje056.mongodb.net
         SIGNER_KEY: ${{ secrets.SIGNER_KEY }}
       run: mvn test --file server/pom.xml
 
@@ -72,7 +72,7 @@ jobs:
     - name: Run application
       env:
         MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
-        MONGO_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@mongo:27017
+        MONGO_URI: mongodb://${{ secrets.MONGO_USER }}:${{ secrets.MONGO_PASSWORD }}@web.ehje056.mongodb.net
         SIGNER_KEY: ${{ secrets.SIGNER_KEY }}
       run: docker-compose up --build -d
 
