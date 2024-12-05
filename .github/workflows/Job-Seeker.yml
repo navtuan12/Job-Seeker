@@ -68,6 +68,15 @@ jobs:
         SIGNER_KEY: ${{ secrets.SIGNER_KEY }}
       run: docker-compose up --build -d
 
+    - name: Wait for application to be ready
+      run: |
+          for i in {1..10}; do
+          curl -s http://localhost:3000 && break || sleep 5
+          done
+
+    - name: Check application logs
+      run: docker-compose logs
+
     - name: Access application
       run: curl http://localhost:3000
 
