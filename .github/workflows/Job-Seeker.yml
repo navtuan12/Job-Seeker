@@ -53,7 +53,7 @@ jobs:
       run: mvn test --file server/pom.xml
 
     - name: Build Docker image
-      run: docker build -t job-seeker -f server/Dockerfile
+      run: docker buildx build -t job-seeker -f server/Dockerfile
 
     - name: Run application
       env:
