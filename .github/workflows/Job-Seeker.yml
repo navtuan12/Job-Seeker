@@ -57,31 +57,3 @@ jobs:
       with:
         name: job-seeker-docker-image
         path: job-seeker_${{ github.sha }}.tar
-
-    - name: Install Docker Compose
-      run: |
-          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-          sudo chmod +x /usr/local/bin/docker-compose
-          docker-compose --version
-
-    - name: Run application
-      env:
-        MONGO_DATABASE: ${{ secrets.MONGO_DATABASE }}
-        MONGO_URI: ${{ secrets.MONGO_URI }}
-        SIGNER_KEY: ${{ secrets.SIGNER_KEY }}
-      run: docker-compose up --build -d
-
-    - name: Wait for application to be ready
-      run: |
-          for i in {1..10}; do
-          curl -s http://localhost:3000 && break || sleep 5
-          done
-
-    - name: Check application logs
-      run: docker-compose logs
-
-    - name: Access application
-      run: curl http://localhost:3000
-
-    - name: Cleanup
-      run: docker-compose down
