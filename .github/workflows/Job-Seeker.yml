@@ -42,17 +42,21 @@ jobs:
         SIGNER_KEY: ${{ secrets.SIGNER_KEY }}
       run: mvn test --file server/pom.xml
 
-    - name: Build Docker image
-      run: docker buildx build -t job-seeker -f server/Dockerfile server/
+    - name: Build Docker image with unique tag
+      env:
+        IMAGE_TAG: ${{ github.sha }}
+      run: docker buildx build -t job-seeker:${{ env.IMAGE_TAG }} -f server/Dockerfile server/
 
     - name: Save Docker image as artifact
-      run: docker save job-seeker > job-seeker.tar
+      env:
+        IMAGE_TAG: ${{ github.sha }}
+      run: docker save job-seeker:${{ env.IMAGE_TAG }} > job-seeker_${{ env.IMAGE_TAG }}.tar
 
     - name: Upload Docker image artifact
       uses: actions/upload-artifact@v3
       with:
         name: job-seeker-docker-image
-        path: job-seeker.tar
+        path: job-seeker_${{ github.sha }}.tar
 
     - name: Install Docker Compose
       run: |
