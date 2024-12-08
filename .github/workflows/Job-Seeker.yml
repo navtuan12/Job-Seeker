@@ -45,6 +45,15 @@ jobs:
     - name: Build Docker image
       run: docker buildx build -t job-seeker -f server/Dockerfile server/
 
+    - name: Save Docker image as artifact
+      run: docker save job-seeker > job-seeker.tar
+
+    - name: Upload Docker image artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: job-seeker-docker-image
+        path: job-seeker.tar
+
     - name: Install Docker Compose
       run: |
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
