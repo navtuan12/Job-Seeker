@@ -1,4 +1,4 @@
-name: Job-Seeker CI/CD
+name: Job-Seeker Build
 
 on:
   push:
