@@ -1,4 +1,4 @@
-name: Job-Seeker-Build
+name: Job-Seeker
 
 on:
   push:
@@ -65,3 +65,51 @@ jobs:
         name: image-tag
         path: image-tag.txt
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Download IMAGE_TAG artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: image-tag
+
+    - name: Read IMAGE_TAG from artifact
+      id: read_image_tag
+      run: echo "IMAGE_TAG=$(cat image-tag.txt)" >> $GITHUB_ENV
+
+    - name: Download Docker image artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: docker-image
+        path: job-seeker.tar.gz
+
+    - name: Load Docker image
+      run: gunzip -c job-seeker.tar.gz | docker load
+
+    - name: Set up kubectl
+      run: |
+        curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x kubectl
+        sudo mv kubectl /usr/local/bin/
+
+    - name: Set up Minikube (if needed)
+      run: |
+        if ! command -v minikube &> /dev/null; then
+          curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+          sudo install minikube-linux-amd64 /usr/local/bin/minikube
+        fi
+        minikube start --driver=docker
+
+    - name: Configure kubectl for Minikube
+      run: |
+        kubectl config use-context minikube
+
+    - name: Deploy to Kubernetes
+      run: |
+        # Apply the deployment configuration
+        kubectl apply -f manifest/deployment.yml
+        
+        # Set the image to the newly built Docker image with the correct tag
+        kubectl set image deployment/job-seeker job-seeker=local/job-seeker:${{ env.IMAGE_TAG }}
