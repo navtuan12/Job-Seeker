@@ -46,3 +46,18 @@ jobs:
       env:
         IMAGE_TAG: ${{ github.sha }}
       run: docker buildx build -t job-seeker:${{ env.IMAGE_TAG }} -f server/Dockerfile server/
+
+    - name: Save Docker image as artifact
+      run: docker save job-seeker:${{ github.sha }} | gzip > job-seeker.tar.gz
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: job-seeker.tar.gz
+
+    - name: Save IMAGE_TAG as artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: image-tag
+        path: image-tag.txt
