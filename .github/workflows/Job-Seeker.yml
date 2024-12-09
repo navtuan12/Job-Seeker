@@ -1,4 +1,4 @@
-name: Job-Seeker Build
+name: Job-Seeker-Build
 
 on:
   push:
