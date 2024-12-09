@@ -53,7 +53,6 @@ jobs:
     - name: Create IMAGE_TAG file
       run: echo "${{ github.sha }}" > image-tag.txt
       
-  deploy:
     - name: Upload Docker image artifact
       uses: actions/upload-artifact@v3
       with:
@@ -66,7 +65,7 @@ jobs:
         name: image-tag
         path: image-tag.txt
 
-     deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
