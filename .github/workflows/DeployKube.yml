@@ -1,9 +1,9 @@
-name: Deploy to Kubernetes
+name: Job-Seeker Deploy
 
 on:
   workflow_run:
     workflows:
-      - Job-Seeker
+      - Job-Seeker Build
     types:
       - completed
 
