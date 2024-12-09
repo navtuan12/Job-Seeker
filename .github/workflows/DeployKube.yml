@@ -1,12 +1,12 @@
-name: Job-Seeker Deploy
+name: Job-Seeker-Deploy
 
 on:
   workflow_run:
     workflows:
-      - Job-Seeker Build
+      - Job-Seeker-Build
     types:
       - completed
-
+      
 jobs:
   deploy:
     runs-on: ubuntu-latest
