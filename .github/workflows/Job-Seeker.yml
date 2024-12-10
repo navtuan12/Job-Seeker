@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  build and test JDK17:
+  Build-and-test-JDK17:
     runs-on: ubuntu-latest
 
     steps:
@@ -42,9 +42,9 @@ jobs:
         SIGNER_KEY: ${{ secrets.SIGNER_KEY }}
       run: mvn test --file server/pom.xml
 
-  Build docker image:
+  Build-docker-image:
 
-    needs: build and test JDK17
+    needs: build-and-test-JDK17
     runs-on: ubuntu-latest
 
     steps:
@@ -53,9 +53,9 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: docker buildx build -t job-seeker:${{ env.IMAGE_TAG }} -f server/Dockerfile server/
   
-  Test Aqua Trivy:
+  Test-Aqua-Trivy:
 
-    needs: Build docker image
+    needs: Build-docker-image
     runs-on: ubuntu-latest
 
     steps:
@@ -66,9 +66,9 @@ jobs:
         scan-ref: '.'
         trivy-config: trivy.yaml
 
-  Save docker image:
+  Save-docker-image:
 
-    needs: Test Aqua Trivy
+    needs: Test-Aqua-Trivy
     runs-on: ubuntu-latest
 
     steps:
