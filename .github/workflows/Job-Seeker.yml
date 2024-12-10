@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  Build-and-test-JDK17:
+  Build-and-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -53,12 +53,12 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: docker buildx build -t job-seeker:${{ env.IMAGE_TAG }} -f server/Dockerfile server/
   
-  Test-Aqua-Trivy:
+  #Test-Aqua-Trivy:
 
-    needs: Build-docker-image
-    runs-on: ubuntu-latest
+  #  needs: Build-docker-image
+  #  runs-on: ubuntu-latest
 
-    steps:
+  #  steps:
     - name: Aqua Security Trivy
       uses: aquasecurity/trivy-action@0.29.0      
       with:
@@ -66,12 +66,12 @@ jobs:
         scan-ref: '.'
         trivy-config: trivy.yaml
 
-  Save-docker-image:
+  #Save-docker-image:
 
-    needs: Test-Aqua-Trivy
-    runs-on: ubuntu-latest
+  #  needs: Test-Aqua-Trivy
+  #  runs-on: ubuntu-latest
 
-    steps:
+  #  steps:
 
     - name: Save Docker image as artifact
       run: docker save job-seeker:${{ github.sha }} | gzip > job-seeker.tar.gz
