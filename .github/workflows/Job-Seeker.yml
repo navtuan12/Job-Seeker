@@ -91,7 +91,9 @@ jobs:
         ls -l job-seeker.tar.gz
 
     - name: Unzip Docker image
-      run: tar -c job-seeker.tar.gz directory/
+      run: |
+       tar cvzf job-seeker.tar.gz directory/
+       #tar xvzf job-seeker.tar.gz
 
     - name: Load Docker image
       run: docker load
