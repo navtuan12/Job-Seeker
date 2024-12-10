@@ -1,4 +1,4 @@
-name: Job-Seeker
+name: Job-Seeker CI/CD
 
 on:
   push:
@@ -85,6 +85,11 @@ jobs:
         name: docker-image
         path: job-seeker.tar.gz
 
+    - name: Validate downloaded artifact
+      run: |
+        file job-seeker.tar.gz
+        ls -l job-seeker.tar.gz
+
     - name: Load Docker image
       run: gunzip -c job-seeker.tar.gz | docker load
 
@@ -103,8 +108,7 @@ jobs:
         minikube start --driver=docker
 
     - name: Configure kubectl for Minikube
-      run: |
-        kubectl config use-context minikube
+      run: kubectl config use-context minikube
 
     - name: Deploy to Kubernetes
       run: |
