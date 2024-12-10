@@ -47,6 +47,13 @@ jobs:
         IMAGE_TAG: ${{ github.sha }}
       run: docker buildx build -t job-seeker:${{ env.IMAGE_TAG }} -f server/Dockerfile server/
 
+    - name: Aqua Security Trivy
+      uses: aquasecurity/trivy-action@0.29.0      
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        trivy-config: trivy.yaml
+
     - name: Save Docker image as artifact
       run: docker save job-seeker:${{ github.sha }} | gzip > job-seeker.tar.gz
 
