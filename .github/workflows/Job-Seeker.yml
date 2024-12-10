@@ -44,7 +44,7 @@ jobs:
 
   Build-docker-image:
 
-    needs: build-and-test-JDK17
+    needs: Build-and-test-JDK17
     runs-on: ubuntu-latest
 
     steps:
