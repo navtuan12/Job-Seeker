@@ -90,8 +90,8 @@ jobs:
         file job-seeker.tar.gz
         ls -l job-seeker.tar.gz
 
-    - name: Load Docker image
-      run: gunzip -c job-seeker.tar.gz | docker load
+    - name: Unzip Docker image
+      run: gunzip -c job-seeker.tar.gz #| docker load
 
     - name: Set up kubectl
       run: |
