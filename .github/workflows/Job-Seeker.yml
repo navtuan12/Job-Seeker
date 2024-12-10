@@ -57,7 +57,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: docker-image
-        path: docker-image.tar.gz
+        path: job-seeker.tar.gz
 
     - name: Upload IMAGE_TAG as artifact
       uses: actions/upload-artifact@v3
