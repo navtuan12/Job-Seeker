@@ -46,10 +46,10 @@ jobs:
     - name: Validate downloaded artifact
       run: |
         if [ ! -f job-seeker.tar.gz ]; then
-          echo "Artifact job-seeker.tar.gz not found or is not a file"
+          echo "File job-seeker.tar.gz not found!"
           exit 1
         fi
-        file job-seeker.tar.gz
+        echo "Artifact file exists:"
         ls -lh job-seeker.tar.gz
 
     - name: Load Docker image
