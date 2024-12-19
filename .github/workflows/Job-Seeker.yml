@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,9 +24,25 @@ jobs:
           node-version: 20
 
       # Step 3: Install dependencies
+      # Kiểm tra sự tồn tại của package-lock.json, nếu không có sẽ fallback sang `npm install`
       - name: Install dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "Using npm ci for install..."
+            npm ci
+          else
+            echo "package-lock.json not found. Using npm install..."
+            npm install
+          fi
 
       # Step 4: Build the React app
       - name: Build React app
         run: npm run build
+
+      # Step 5: Archive Build (Optional, nếu cần debug artifacts)
+      - name: Upload Build Artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: build/
