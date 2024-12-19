@@ -3,8 +3,7 @@ name: Build Front-End
 on:
   push:
     branches:
-      - main # Thực hiện khi có push lên nhánh main
-
+      - main
 jobs:
   build:
     runs-on: ubuntu-latest
