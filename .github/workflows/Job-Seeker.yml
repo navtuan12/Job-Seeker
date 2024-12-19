@@ -23,9 +23,14 @@ jobs:
         with:
           node-version: 20
 
-      # Step 3: Install dependencies
-      # Kiểm tra sự tồn tại của package-lock.json, nếu không có sẽ fallback sang `npm install`
+      # Step 3: Navigate to the client directory
+      - name: Navigate to client directory
+        working-directory: client
+        run: echo "Moved to client directory"
+
+      # Step 4: Install dependencies
       - name: Install dependencies
+        working-directory: client
         run: |
           if [ -f package-lock.json ]; then
             echo "Using npm ci for install..."
@@ -35,14 +40,15 @@ jobs:
             npm install
           fi
 
-      # Step 4: Build the React app
+      # Step 5: Build the React app
       - name: Build React app
+        working-directory: client
         run: npm run build
 
-      # Step 5: Archive Build (Optional, nếu cần debug artifacts)
+      # Step 6: Upload Build Artifacts (Optional)
       - name: Upload Build Artifacts
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: build
-          path: build/
+          path: client/build/
