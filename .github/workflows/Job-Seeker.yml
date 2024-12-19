@@ -45,7 +45,24 @@ jobs:
         working-directory: client
         run: npm run build
 
-      # Step 6: Upload Build Artifacts (Optional)
+      # Step 6: Scan with Trivy
+      - name: Aqua Security Trivy
+        uses: aquasecurity/trivy-action@0.29.0
+        with:
+          scan-type: 'fs' # File system scan
+          scan-ref: '.'    # Current directory
+          trivy-config: trivy.yaml # Optional: custom config file
+
+      # Step 7: Scan dependencies with Snyk
+      - name: Snyk Security Scan
+        uses: snyk/actions/node@master
+        with:
+          command: test
+          args: --severity-threshold=high # Optional: customize severity threshold
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      # Step 8: Upload Build Artifacts (Optional)
       - name: Upload Build Artifacts
         if: always()
         uses: actions/upload-artifact@v3
