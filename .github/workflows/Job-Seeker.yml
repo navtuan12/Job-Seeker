@@ -39,6 +39,7 @@ jobs:
             echo "package-lock.json not found. Using npm install..."
             npm install
           fi
+          npm install axios@1.7.8
 
       # Step 5: Build the React app
       - name: Build React app
