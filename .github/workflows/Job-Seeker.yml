@@ -53,6 +53,14 @@ jobs:
           scan-ref: '.'    
           trivy-config: trivy.yaml
 
+      - name: Snyk Security Scan
+        uses: snyk/actions/node@master
+        with:
+          command: test
+          args: client/ # Specify the client directory containing package.json
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
       # Step 7: Upload Build Artifacts
       - name: Upload Build Artifacts
         if: always()
