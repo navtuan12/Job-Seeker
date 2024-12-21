@@ -28,7 +28,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube_server') {
-                    withCredentials([string(credentialsId: '3', variable: 'SIGNER_KEY')]) {
+                    withCredentials([string(credentialsId: 'signerkey', variable: 'SIGNER_KEY')]) {
                     sh " mvn -f server/pom.xml clean verify sonar:sonar -Dsonar.projectKey=java-maven -Dsonar.sources=src -Dsonar.java.binaries=target/classes -Dsonar.tests=src/test/java -Dsonar.exclusions=src/test/java/**/* -DSIGNER_KEY=${SIGNER_KEY}"
                     }   
                 }
@@ -83,9 +83,6 @@ pipeline {
                     docker-compose -f docker-compose.prod.yml pull
                     docker-compose -f docker-compose.prod.yml up -d --build
                 """
-                 //  sh "docker run -d -p ${SERVER_PORT}:${SERVER_PORT} --name job-seeker-server your-dockerhub-username/job-seeker-server:${env.BUILD_NUMBER}"
-                 //  sh "docker run -d -p ${CLIENT_PORT}:${CLIENT_PORT} --name job-seeker-client your-dockerhub-username/job-seeker-client:${env.BUILD_NUMBER}"
-
             }
         }
         */
