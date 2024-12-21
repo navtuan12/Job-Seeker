@@ -62,6 +62,10 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
+      - name: Build Docker Image
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+        run: docker buildx build -t job-seeker:${{ env.IMAGE_TAG }} -f client/Dockerfile client/
       # Step 7: Upload Build Artifacts
       - name: Upload Build Artifacts
         if: always()
