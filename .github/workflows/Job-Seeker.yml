@@ -70,7 +70,7 @@ jobs:
 
       # Step 8: Push Docker Image
       - name: Push Docker Image
-        run: docker push reg.devnoneknow.online//job_seeker/frontend:latest
+        run: docker push reg.devnoneknow.online/job_seeker/frontend:latest
 
       # Step 9: Upload Build Artifacts
       - name: Upload Build Artifacts
