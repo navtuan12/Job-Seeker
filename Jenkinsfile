@@ -43,30 +43,30 @@ pipeline {
             }
         }
         
-        stage('Build and Push Docker Images') {
-            agent {
-                docker {
-                    image 'docker:latest'
-                    reuseNode true
-                }
-            }
-            steps {
-                script {
-                    def harborUrl = "harbor.proj.nt548.com"
+        // stage('Build and Push Docker Images') {
+        //     agent {
+        //         docker {
+        //             image 'docker:latest'
+        //             reuseNode true
+        //         }
+        //     }
+        //     steps {
+        //         script {
+        //             def harborUrl = "harbor.proj.nt548.com"
 
-                    def harborProject = "nt548proj"
+        //             def harborProject = "nt548proj"
 
-                    docker.withRegistry("https://$harborUrl", 'harbor-credentials') {
-                        def serverImage = docker.build("$harborUrl/$harborProject/job-seeker-server:${env.BUILD_NUMBER}", "-f server/Dockerfile .")
-                        serverImage.push()
+        //             docker.withRegistry("https://$harborUrl", 'harbor-credentials') {
+        //                 def serverImage = docker.build("$harborUrl/$harborProject/job-seeker-server:${env.BUILD_NUMBER}", "-f server/Dockerfile .")
+        //                 serverImage.push()
 
-                        def clientImage = docker.build("$harborUrl/$harborProject/job-seeker-client:${env.BUILD_NUMBER}",
-                                "-f client/Dockerfile .")
-                        clientImage.push()
-                    }
-                }
-            }
-        }
+        //                 def clientImage = docker.build("$harborUrl/$harborProject/job-seeker-client:${env.BUILD_NUMBER}",
+        //                         "-f client/Dockerfile .")
+        //                 clientImage.push()
+        //             }
+        //         }
+        //     }
+        // }
         /* 
         stage('Deploy') {
             agent {
