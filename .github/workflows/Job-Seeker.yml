@@ -1,0 +1,81 @@
+name: Job-Seeker CI/CD FrontEnd
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up Node.js
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # Step 3: Navigate to the client directory
+      - name: Navigate to client directory
+        working-directory: client
+        run: echo "Moved to client directory"
+
+      # Step 4: Install dependencies
+      - name: Install dependencies
+        working-directory: client
+        run: |
+          if [ -f package-lock.json ]; then
+            echo "Using npm ci for install..."
+            npm ci
+          else
+            echo "package-lock.json not found. Using npm install..."
+            npm install
+          fi
+          npm install axios@1.7.8
+
+      # Step 5: Build the React app
+      - name: Build React app
+        working-directory: client
+        run: npm run build
+
+      # Step 6: Scan with Trivy
+      - name: Aqua Security Trivy
+        uses: aquasecurity/trivy-action@0.29.0
+        with:
+          scan-type: 'fs' 
+          scan-ref: '.'    
+          trivy-config: trivy.yaml
+
+      - name: Snyk Security Scan
+        uses: snyk/actions/node@master
+        with:
+          command: test
+          args: client/ # Specify the client directory containing package.json
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+      # Step 7: Build Docker image
+      - name: Log in to Docker
+        run: echo "Harbor@123" | docker login -u "khanhlq" --password-stdin https://reg.devnoneknow.online/
+      - name: Build Docker Image
+        run:  docker buildx build -t reg.devnoneknow.online/job_seeker/frontend:latest -f client/Dockerfile client/
+
+      # Step 8: Push Docker Image
+      - name: Push Docker Image
+        run: docker push reg.devnoneknow.online/job_seeker/frontend:latest
+
+      # Step 9: Upload Build Artifacts
+      - name: Upload Build Artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: client/build/
