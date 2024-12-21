@@ -66,11 +66,11 @@ jobs:
       - name: Log in to Docker
         run: echo "Harbor@123" | docker login -u "khanhlq" --password-stdin https://reg.devnoneknow.online/
       - name: Build Docker Image
-        run:  docker buildx build -t reg.devnoneknow.online/job_seeker/FrontEnd:latest -f client/Dockerfile client/
+        run:  docker buildx build -t reg.devnoneknow.online/job_seeker/frontend:latest -f client/Dockerfile client/
 
       # Step 8: Push Docker Image
       - name: Push Docker Image
-        run: docker push https://reg.devnoneknow.online//job_seeker/FrontEnd:latest .
+        run: docker push https://reg.devnoneknow.online//job_seeker/frontend:latest .
 
       # Step 9: Upload Build Artifacts
       - name: Upload Build Artifacts
