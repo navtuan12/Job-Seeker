@@ -1,4 +1,4 @@
-name: Build Front-End
+name: Job-Seeker CI/CD FrontEnd
 
 on:
   push:
@@ -62,11 +62,19 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
+      # Step 7: Build Docker image
+      - name: Log in to Docker
+        run: echo "Harbor@123" | docker login -u "khanhlq" --password-stdin https://reg.devnoneknow.online/
       - name: Build Docker Image
-        env:
+        evn:
           IMAGE_TAG: ${{ github.sha }}
-        run: docker buildx build -t job-seeker:${{ env.IMAGE_TAG }} -f client/Dockerfile client/
-      # Step 7: Upload Build Artifacts
+        run: docker buildx build -t https://reg.devnoneknow.online//job_seeker/FrontEnd:${{ github.sha }} -f client/Dockerfile client/
+
+      # Step 8: Push Docker Image
+      - name: Push Docker Image
+        run: docker push https://reg.devnoneknow.online//job_seeker/FrontEnd:${{ github.sha }} .
+
+      # Step 9: Upload Build Artifacts
       - name: Upload Build Artifacts
         if: always()
         uses: actions/upload-artifact@v3
