@@ -15,15 +15,14 @@ pipeline {
     }
 
     stages {
-        stage ('Initialize') {
-            steps {
-                script {
-                    def dockerHome = tool 'myDocker'
-                    env.PATH = "${dockerHome}/bin:${env.PATH}"
-                }
-            }
-            
-        }
+        // stage ('Initialize') {
+        //     steps {
+        //         script {
+        //             def dockerHome = tool 'myDocker'
+        //             env.PATH = "${dockerHome}/bin:${env.PATH}"
+        //         }
+        //     }
+        // }
 
         stage('Checkout') {
             steps {
@@ -78,12 +77,13 @@ pipeline {
                     // docker version
                     // docker ps
                     // '''
-
-                    docker.withRegistry(env.HARBOR_URL, env.HARBOR_CREDENTIALS) {
-                        def serverImage = docker.build("${env.HARBOR_URL}/${env.HARBOR_PROJECT}/job-seeker-server:${env.BUILD_NUMBER}", '-f server/Dockerfile .')
-                        def clientImage = docker.build("${env.HARBOR_URL}/${env.HARBOR_PROJECT}/job-seeker-client:${env.BUILD_NUMBER}", '-f client/Dockerfile .')
-                        serverImage.push()
-                        clientImage.push()
+                    docker.image('docker:latest').inside("-v /var/run/docker.sock:/var/run/docker.sock") {
+                        docker.withRegistry(env.HARBOR_URL, env.HARBOR_CREDENTIALS) {
+                            def serverImage = docker.build("${env.HARBOR_URL}/${env.HARBOR_PROJECT}/job-seeker-server:${env.BUILD_NUMBER}", '-f server/Dockerfile .')
+                            def clientImage = docker.build("${env.HARBOR_URL}/${env.HARBOR_PROJECT}/job-seeker-client:${env.BUILD_NUMBER}", '-f client/Dockerfile .')
+                            serverImage.push()
+                            clientImage.push()
+                        }
                     }
                 }
             }
