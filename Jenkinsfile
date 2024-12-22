@@ -15,15 +15,15 @@ pipeline {
     }
 
     stages {
-        stage('Check Docker') {
-            steps {
-                sh 'docker --version'
-            }
-        }
-
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Check Docker') {
+            steps {
+                sh 'docker --version'
             }
         }
 
@@ -61,18 +61,6 @@ pipeline {
 
             steps {
                 script {
-                    // sh '''
-                    // dockerd &
-                    // sleep 10
-                    // docker info
-                    // '''
-
-                    // sh '''
-                    // echo "Testing Docker socket..."
-                    // ls -l /var/run/docker.sock
-                    // docker version
-                    // docker ps
-                    // '''
                     docker.withRegistry(env.HARBOR_URL, env.HARBOR_CREDENTIALS) {
                         def serverImage = docker.build("${env.HARBOR_URL}/${env.HARBOR_PROJECT}/job-seeker-server:${env.BUILD_NUMBER}", '-f server/Dockerfile .')
                         def clientImage = docker.build("${env.HARBOR_URL}/${env.HARBOR_PROJECT}/job-seeker-client:${env.BUILD_NUMBER}", '-f client/Dockerfile .')
