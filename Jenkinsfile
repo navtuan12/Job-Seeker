@@ -51,12 +51,12 @@ pipeline {
         }
 
         stage('Build and Push Docker Images') {
-            agent {
-                docker {
-                    image 'docker:latest'
-                    reuseNode true
-                }
-            }
+            // agent {
+            //     docker {
+            //         image 'docker:latest'
+            //         reuseNode true
+            //     }
+            // }
 
             steps {
                 script {
