@@ -6,4 +6,4 @@ RUN echo '#!/bin/bash\nchmod 666 /var/run/docker.sock' > /usr/local/bin/fix-dock
     chmod +x /usr/local/bin/fix-docker-socket.sh
 ENTRYPOINT ["/bin/bash", "-c", "/usr/local/bin/fix-docker-socket.sh && exec /sbin/tini -- /usr/local/bin/jenkins.sh"]
 
-USER jenkins
+USER root
