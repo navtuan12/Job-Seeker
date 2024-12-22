@@ -57,8 +57,15 @@ pipeline {
                 script {
                     sh '''
                     dockerd &
-                    sleep 5
+                    sleep 10
                     docker info
+                    '''
+
+                    sh '''
+                    echo "Testing Docker socket..."
+                    ls -l /var/run/docker.sock
+                    docker version
+                    docker ps
                     '''
 
                     docker.withRegistry(env.HARBOR_URL, env.HARBOR_CREDENTIALS) {
