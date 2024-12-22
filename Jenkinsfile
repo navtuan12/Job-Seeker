@@ -46,12 +46,13 @@ pipeline {
         }
 
         stage('Build and Push Docker Images') {
-            // agent {
-            //     docker {
-            //         image 'docker:latest'
-            //         reuseNode true
-            //     }
-            // }
+            agent {
+                docker {
+                    image 'docker:24-dind'
+                    args '--priviliged'
+                    reuseNode true
+                }
+            }
             steps {
                 script {
                     docker.withRegistry(env.HARBOR_URL, env.HARBOR_CREDENTIALS) {
