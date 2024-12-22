@@ -12,18 +12,20 @@ pipeline {
 
     tools {
         maven 'maven'
+        git 'git'
     }
 
     stages {
         stage('Checkout') {
             steps {
+                deleteDir()
                 checkout scm
             }
         }
 
         stage('Check Docker') {
             steps {
-                deleteDir()
+
                 sh 'docker --version'
             }
         }
