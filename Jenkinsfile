@@ -3,8 +3,6 @@ pipeline {
 
     environment {
         SONAR_SERVER_URL = 'http://sonarqube:9000'
-        SERVER_PORT = 8800
-        CLIENT_PORT = 80
         HARBOR_URL = 'https://harbor.proj.nt548.com:443'
         HARBOR_PROJECT = 'nt548proj'
         HARBOR_CREDENTIALS = 'harborCredentials'
@@ -24,7 +22,6 @@ pipeline {
 
         stage('Check Docker') {
             steps {
-
                 sh 'docker --version'
             }
         }
