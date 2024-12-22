@@ -77,7 +77,7 @@ pipeline {
                     // docker version
                     // docker ps
                     // '''
-                    docker.image('docker:latest').inside("-v /var/run/docker.sock:/var/run/docker.sock") {
+                    docker.image('docker:latest').inside("-v /var/jenkins_home/.docker:/usr/bin/docker:ro") {
                         docker.withRegistry(env.HARBOR_URL, env.HARBOR_CREDENTIALS) {
                             def serverImage = docker.build("${env.HARBOR_URL}/${env.HARBOR_PROJECT}/job-seeker-server:${env.BUILD_NUMBER}", '-f server/Dockerfile .')
                             def clientImage = docker.build("${env.HARBOR_URL}/${env.HARBOR_PROJECT}/job-seeker-client:${env.BUILD_NUMBER}", '-f client/Dockerfile .')
