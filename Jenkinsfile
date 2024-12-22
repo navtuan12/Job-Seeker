@@ -12,7 +12,6 @@ pipeline {
 
     tools {
         maven 'maven'
-        git 'git'
     }
 
     stages {
