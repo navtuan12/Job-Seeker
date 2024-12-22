@@ -23,6 +23,7 @@ pipeline {
 
         stage('Check Docker') {
             steps {
+                deleteDir()
                 sh 'docker --version'
             }
         }
