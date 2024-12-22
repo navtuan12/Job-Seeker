@@ -55,6 +55,12 @@ pipeline {
             }
             steps {
                 script {
+                    sh '''
+                    dockerd &
+                    sleep 5
+                    docker info
+                    '''
+
                     docker.withRegistry(env.HARBOR_URL, env.HARBOR_CREDENTIALS) {
                         def serverImage = docker.build("${env.HARBOR_URL}:${env.HARBOR_PORT}/${env.HARBOR_PROJECT}/job-seeker-server:${env.BUILD_NUMBER}", '-f server/Dockerfile .')
                         def clientImage = docker.build("${env.HARBOR_URL}:${env.HARBOR_PORT}/${env.HARBOR_PROJECT}/job-seeker-client:${env.BUILD_NUMBER}", '-f client/Dockerfile .')
