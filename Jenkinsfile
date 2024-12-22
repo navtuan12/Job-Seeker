@@ -15,6 +15,11 @@ pipeline {
     }
 
     stages {
+        stage ('Initialize') {
+            def dockerHome = tool 'myDocker'
+            env.PATH = "${dockerHome}/bin:${env.PATH}"
+        }
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -46,27 +51,27 @@ pipeline {
         }
 
         stage('Build and Push Docker Images') {
-            agent {
-                docker {
-                    image 'docker:24-dind'
-                    args '--priviliged --network=host -v /var/run/docker.sock:/var/run/docker.sock'
-                    reuseNode true
-                }
-            }
+            // agent {
+            //     docker {
+            //         image 'docker:24-dind'
+            //         args '--priviliged --network=host -v /var/run/docker.sock:/var/run/docker.sock'
+            //         reuseNode true
+            //     }
+            // }
             steps {
                 script {
-                    sh '''
-                    dockerd &
-                    sleep 10
-                    docker info
-                    '''
+                    // sh '''
+                    // dockerd &
+                    // sleep 10
+                    // docker info
+                    // '''
 
-                    sh '''
-                    echo "Testing Docker socket..."
-                    ls -l /var/run/docker.sock
-                    docker version
-                    docker ps
-                    '''
+                    // sh '''
+                    // echo "Testing Docker socket..."
+                    // ls -l /var/run/docker.sock
+                    // docker version
+                    // docker ps
+                    // '''
 
                     docker.withRegistry(env.HARBOR_URL, env.HARBOR_CREDENTIALS) {
                         def serverImage = docker.build("${env.HARBOR_URL}:${env.HARBOR_PORT}/${env.HARBOR_PROJECT}/job-seeker-server:${env.BUILD_NUMBER}", '-f server/Dockerfile .')
