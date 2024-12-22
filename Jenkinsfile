@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SONAR_SERVER_URL = 'http://sonarqube:9000'
-        HARBOR_URL = 'https://harbor.proj.nt548.com:443'
+        HARBOR_URL = 'http://harbor.proj.nt548.com:8081'
         HARBOR_PROJECT = 'nt548proj'
         HARBOR_CREDENTIALS = 'harborCredentials'
     }
