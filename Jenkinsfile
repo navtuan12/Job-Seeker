@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         SONAR_SERVER_URL = 'http://sonarqube:9000'
-        HARBOR_URL = 'registry.devnoneknow.online'
-        HARBOR_PROJECT = 'nt548jenkins'
+        HARBOR_URL = 'reg.devnoneknow.online'
+        HARBOR_PROJECT = 'jobseeker'
         HARBOR_CREDENTIALS = 'harborCredentials'
     }
 
