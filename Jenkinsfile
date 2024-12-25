@@ -36,7 +36,7 @@ pipeline {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube_server') {
                     withCredentials([string(credentialsId: 'signerkey', variable: 'SIGNER_KEY')]) {
-                        sh " mvn -f server/pom.xml clean verify sonar:sonar -Dsonar.projectKey=jenkins -Dsonar.sources=src -Dsonar.java.binaries=target/classes -Dsonar.tests=src/test/java -Dsonar.exclusions=src/test/java/**/* -DSIGNER_KEY=${SIGNER_KEY}"
+                        sh " mvn -f server/pom.xml clean verify sonar:sonar -Dsonar.projectKey=jenkins -Dsonar.sources=src -Dsonar.java.binaries=target/classes -Dsonar.exclusions=src/test/java/**/* -DSIGNER_KEY=${SIGNER_KEY}"
                     }
                 }
             }
