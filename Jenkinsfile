@@ -35,9 +35,18 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube_server') {
-                    withCredentials([string(credentialsId: 'signerkey', variable: 'SIGNER_KEY')]) {
-                        sh " mvn -f server/pom.xml clean verify sonar:sonar -Dsonar.projectKey=jenkins -Dsonar.sources=src -Dsonar.java.binaries=target/classes -Dsonar.exclusions=src/test/java/**/* -DSIGNER_KEY=${SIGNER_KEY}"
-                    }
+                    withCredentials([
+                        string(credentialsId: 'signerkey', variable: 'SIGNER_KEY'),
+                        string(credentialsId: 'mongoURI', variable: 'MONGO_URI')
+                        ]) {
+                        sh """ mvn -f server/pom.xml clean verify sonar:sonar \
+                        -Dsonar.projectKey=jenkins \
+                        -Dsonar.sources=src \
+                        -Dsonar.java.binaries=target/classes \
+                        -Dsonar.exclusions=src/test/java/**/* \
+                        -DSIGNER_KEY=${SIGNER_KEY} \
+                        -Dspring.data.mongodb.uri=${MONGO_URI}"""
+                        }
                 }
             }
         }
@@ -51,13 +60,6 @@ pipeline {
         }
 
         stage('Build and Push Docker Images') {
-            // agent {
-            //     docker {
-            //         image 'docker:latest'
-            //         reuseNode true
-            //     }
-            // }
-
             steps {
                 script {
                     docker.withRegistry("https://${env.HARBOR_URL}", env.HARBOR_CREDENTIALS) {
