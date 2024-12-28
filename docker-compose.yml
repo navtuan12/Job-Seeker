@@ -27,9 +27,9 @@ services:
     ports:
       - '9000:9000'
     environment:
-      - sonar.jdbc.username=sonar
-      - sonar.jdbc.password=sonar
-      - sonar.jdbc.url=jdbc:postgresql://db:5432/sonar
+      - sonar.jdbc.username=${SONAR_USER}
+      - sonar.jdbc.password=${SONAR_PASSWORD}
+      - sonar.jdbc.url=${SONAR_URL}
 
   db:
     image: postgres
@@ -37,8 +37,8 @@ services:
     networks:
       - sonarnet
     environment:
-      - POSTGRES_USER=sonar
-      - POSTGRES_PASSWORD=sonar
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     volumes:
       - postgresql:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
